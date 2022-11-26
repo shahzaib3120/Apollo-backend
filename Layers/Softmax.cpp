@@ -1,7 +1,7 @@
 //
 // Created by HP on 11/25/2022.
 //
-
+#include <Eigen/Dense>
 #include "Softmax.h"
 Softmax::Softmax() {
     this->inputs = Eigen::MatrixXd(0,0);

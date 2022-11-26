@@ -118,9 +118,52 @@ build Apollo.exe: CXX_EXECUTABLE_LINKER__Apollo_Debug CMakeFiles/Apollo.dir/main
 
 build cmake_object_order_depends_target_Apollo-test: phony || CMakeFiles/Apollo-test.dir
 
-build CMakeFiles/Apollo-test.dir/Tests/SigmoidTest.cpp.obj: CXX_COMPILER__Apollo-test_Debug E$:/Learning-E/Apollo/Tests/SigmoidTest.cpp || cmake_object_order_depends_target_Apollo-test
-  DEP_FILE = CMakeFiles\Apollo-test.dir\Tests\SigmoidTest.cpp.obj.d
+build CMakeFiles/Apollo-test.dir/Tests/Tests.cpp.obj: CXX_COMPILER__Apollo-test_Debug E$:/Learning-E/Apollo/Tests/Tests.cpp || cmake_object_order_depends_target_Apollo-test
+  DEP_FILE = CMakeFiles\Apollo-test.dir\Tests\Tests.cpp.obj.d
   FLAGS = -g -std=gnu++14
+  INCLUDES = -isystem C:/Users/HP/anaconda3/Library/include/eigen3
+  OBJECT_DIR = CMakeFiles\Apollo-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\Apollo-test.dir\Tests
+
+build CMakeFiles/Apollo-test.dir/Layers/Layer.cpp.obj: CXX_COMPILER__Apollo-test_Debug E$:/Learning-E/Apollo/Layers/Layer.cpp || cmake_object_order_depends_target_Apollo-test
+  DEP_FILE = CMakeFiles\Apollo-test.dir\Layers\Layer.cpp.obj.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -isystem C:/Users/HP/anaconda3/Library/include/eigen3
+  OBJECT_DIR = CMakeFiles\Apollo-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\Apollo-test.dir\Layers
+
+build CMakeFiles/Apollo-test.dir/Layers/Dense.cpp.obj: CXX_COMPILER__Apollo-test_Debug E$:/Learning-E/Apollo/Layers/Dense.cpp || cmake_object_order_depends_target_Apollo-test
+  DEP_FILE = CMakeFiles\Apollo-test.dir\Layers\Dense.cpp.obj.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -isystem C:/Users/HP/anaconda3/Library/include/eigen3
+  OBJECT_DIR = CMakeFiles\Apollo-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\Apollo-test.dir\Layers
+
+build CMakeFiles/Apollo-test.dir/Layers/Sigmoid.cpp.obj: CXX_COMPILER__Apollo-test_Debug E$:/Learning-E/Apollo/Layers/Sigmoid.cpp || cmake_object_order_depends_target_Apollo-test
+  DEP_FILE = CMakeFiles\Apollo-test.dir\Layers\Sigmoid.cpp.obj.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -isystem C:/Users/HP/anaconda3/Library/include/eigen3
+  OBJECT_DIR = CMakeFiles\Apollo-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\Apollo-test.dir\Layers
+
+build CMakeFiles/Apollo-test.dir/Layers/Softmax.cpp.obj: CXX_COMPILER__Apollo-test_Debug E$:/Learning-E/Apollo/Layers/Softmax.cpp || cmake_object_order_depends_target_Apollo-test
+  DEP_FILE = CMakeFiles\Apollo-test.dir\Layers\Softmax.cpp.obj.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -isystem C:/Users/HP/anaconda3/Library/include/eigen3
+  OBJECT_DIR = CMakeFiles\Apollo-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\Apollo-test.dir\Layers
+
+build CMakeFiles/Apollo-test.dir/Utils/Dataloader.cpp.obj: CXX_COMPILER__Apollo-test_Debug E$:/Learning-E/Apollo/Utils/Dataloader.cpp || cmake_object_order_depends_target_Apollo-test
+  DEP_FILE = CMakeFiles\Apollo-test.dir\Utils\Dataloader.cpp.obj.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -isystem C:/Users/HP/anaconda3/Library/include/eigen3
+  OBJECT_DIR = CMakeFiles\Apollo-test.dir
+  OBJECT_FILE_DIR = CMakeFiles\Apollo-test.dir\Utils
+
+build CMakeFiles/Apollo-test.dir/Tests/main.cpp.obj: CXX_COMPILER__Apollo-test_Debug E$:/Learning-E/Apollo/Tests/main.cpp || cmake_object_order_depends_target_Apollo-test
+  DEP_FILE = CMakeFiles\Apollo-test.dir\Tests\main.cpp.obj.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -isystem C:/Users/HP/anaconda3/Library/include/eigen3
   OBJECT_DIR = CMakeFiles\Apollo-test.dir
   OBJECT_FILE_DIR = CMakeFiles\Apollo-test.dir\Tests
 
@@ -132,7 +175,7 @@ build CMakeFiles/Apollo-test.dir/Tests/SigmoidTest.cpp.obj: CXX_COMPILER__Apollo
 #############################################
 # Link the executable Apollo-test.exe
 
-build Apollo-test.exe: CXX_EXECUTABLE_LINKER__Apollo-test_Debug CMakeFiles/Apollo-test.dir/Tests/SigmoidTest.cpp.obj
+build Apollo-test.exe: CXX_EXECUTABLE_LINKER__Apollo-test_Debug CMakeFiles/Apollo-test.dir/Tests/Tests.cpp.obj CMakeFiles/Apollo-test.dir/Layers/Layer.cpp.obj CMakeFiles/Apollo-test.dir/Layers/Dense.cpp.obj CMakeFiles/Apollo-test.dir/Layers/Sigmoid.cpp.obj CMakeFiles/Apollo-test.dir/Layers/Softmax.cpp.obj CMakeFiles/Apollo-test.dir/Utils/Dataloader.cpp.obj CMakeFiles/Apollo-test.dir/Tests/main.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\Apollo-test.dir
