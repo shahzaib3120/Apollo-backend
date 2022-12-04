@@ -6,6 +6,7 @@
 using namespace std;
 int main(){
 //    testSigmoid();
-    testDataloader();
+//    testDataloader();
+    testBCE();
     return 0;
 }
