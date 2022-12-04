@@ -31,15 +31,25 @@ Dataloader::Dataloader(Eigen::MatrixXd data, Eigen::MatrixXd labels) {
 // TODO: for multiclass classification
 
 Dataloader::Dataloader(std::string path) {
-    // read data from exel file
+
+    // Args:
+    //     path: path to the csv file
+    // Format:
+    //     first column is the label
+    //     the first row is the header
+    //     the rest of the columns are the features
+
     fstream file;
     file.open(path, ios::in);
+    if (!file.is_open()) {
+        throw invalid_argument("File not found");
+    }
     vector<vector<double>> data;
     vector<vector<int>> labels;
     string line;
     int linesRead = 0;
     while (getline(file, line)) {
-        // skip first line
+        // skip first line (header)
         if (linesRead == 0) {
             linesRead++;
             continue;
@@ -80,10 +90,15 @@ Dataloader::Dataloader(std::string path) {
 }
 
 void Dataloader::head(int n) {
+
+    // Args:
+    //     n: number of rows to print
+
     // data shape = (features, samples)
     // show first n samples
     for (int i = 0; i < min(data.cols(),n); i++) {
         cout << "Data:" << endl;
+        // show first n features
         for(int j =0; j<min(data.rows(),n); j++) {
             cout << this->data.col(i)[j] << " ";
         }

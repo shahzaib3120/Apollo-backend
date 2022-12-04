@@ -5,10 +5,10 @@
 #include "Loss/Loss.h"
 using namespace std;
 int main() {
-//    string path = "E:/Learning-E/Apollo/Dataset/emails-formatted.csv";
-    string path = "E:/Learning-E/Apollo/Dataset/sampleCircle.csv";
+    string path = "F:/Machine-Learning/Apollo/Dataset/emails-formatted.csv";
+//    string path = "E:/Learning-E/Apollo/Dataset/sampleCircle.csv";
     Dataloader dataloader(path);
-    dataloader.head(2);
+    dataloader.head(5);
     int* shape = dataloader.getDataShape();
     int* labelShape = dataloader.getLabelsShape();
     // print shape of data
