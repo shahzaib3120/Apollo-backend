@@ -6,4 +6,5 @@
 #define APOLLO_TESTS_H
 void testSigmoid();
 void testDataloader();
+void testBCE();
 #endif //APOLLO_TESTS_H
