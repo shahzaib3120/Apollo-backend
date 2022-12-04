@@ -14,6 +14,7 @@ private:
     int numBatches;
     int currentBatch;
     void readData(std::string path);
+    int min(long a, int b);
 public:
     Dataloader(Eigen::MatrixXd data, Eigen::MatrixXd labels, int batchSize);
     Dataloader(Eigen::MatrixXd data, Eigen::MatrixXd labels);
@@ -25,9 +26,11 @@ public:
     Eigen::MatrixXd getBatch(int batchNumber);
     Eigen::MatrixXd getBatch();
     Eigen::MatrixXd getLabels();
+    Eigen::MatrixXd getData();
     Eigen::MatrixXd getLabels(int batchNumber);
     void head(int n);
-    void getSize();
+    int* getDataShape();
+    int* getLabelsShape();
     void showLabels();
 
 };

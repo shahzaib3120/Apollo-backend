@@ -44,41 +44,35 @@ Dataloader::Dataloader(std::string path) {
             linesRead++;
             continue;
         }
-        // read first 5 lines only
-//        if (linesRead > 5) {
-//            break;
-//        }
         vector<double> row;
         vector<int> label;
         string word;
         int i = 0;
-        for (auto x : line) {
-            if (x == ',') {
-                if (i == 0) {
-                    label.push_back(stoi(word));
-                } else {
-                    row.push_back(stod(word));
-                }
-                word = "";
-                i++;
+        stringstream s(line);
+        while (getline(s, word, ',')) {
+            if (i == 0) {
+                label.push_back(stoi(word));
             } else {
-                word = word + x;
+                row.push_back(stod(word));
             }
+            i++;
         }
         label.push_back(stod(word));
         data.push_back(row);
         labels.push_back(label);
         linesRead++;
     }
-    this->data = Eigen::MatrixXd::Random(data.size(), data[0].size());
-    this->labels = Eigen::MatrixXd::Random(labels.size(), 1);
-    for (int i = 0; i < data.size(); i++) {
-        for (int j = 0; j < data[0].size(); j++) {
-            this->data(i, j) = data[i][j];
+    this->labels = Eigen::MatrixXd::Random(1,labels.size());
+    this->data = Eigen::MatrixXd::Random(data[0].size(), data.size());
+    // store data in Eigen::MatrixXd with shape (data, trainingsamples)
+    for (int i = 0; i < data[0].size(); i++) {
+        for (int j = 0; j < data.size(); j++) {
+            this->data(i, j) = data[j][i];
         }
     }
+    // store labels in Eigen::MatrixXd with shape (1, trainingsamples)
     for (int i = 0; i < labels.size(); i++) {
-        this->labels(i, 0) = labels[i][0];
+        this->labels(0, i) = labels[i][0];
     }
     this->numBatches = data.size();
     this->batchSize = data[0].size();
@@ -86,29 +80,45 @@ Dataloader::Dataloader(std::string path) {
 }
 
 void Dataloader::head(int n) {
-    cout << "Data:" << endl;
-    // show first n rows
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < this->data.cols(); j++) {
-            // show first and last 5 columns
-            if (j < 5 || j > this->data.cols() - 5) {
-                cout << this->data(i, j) << " ";
-            }
-            // show ... in between
-            if (j == 5) {
-                cout << "... ";
-            }
+    // data shape = (features, samples)
+    // show first n samples
+    for (int i = 0; i < min(data.cols(),n); i++) {
+        cout << "Data:" << endl;
+        for(int j =0; j<min(data.rows(),n); j++) {
+            cout << this->data.col(i)[j] << " ";
         }
-        // show respective labels
-        cout << "\nLabel: " << this->labels(i, 0) << endl;
+        cout << endl;
+        cout << "Label:" << endl;
+        cout << this->labels.row(0)[i] << endl;
     }
 }
-void Dataloader::getSize() {
-    cout << "Data size: " << this->data.rows() << "x" << this->data.cols() << endl;
-    cout << "Labels size: " << this->labels.rows() << "x" << this->labels.cols() << endl;
+int* Dataloader::getDataShape() {
+    int* shape = new int[2];
+    shape[0] = this->data.rows();
+    shape[1] = this->data.cols();
+    return shape;
+}
+int* Dataloader::getLabelsShape() {
+    int* shape = new int[2];
+    shape[0] = this->labels.rows();
+    shape[1] = this->labels.cols();
+    return shape;
 }
 void Dataloader::showLabels() {
     cout << "Labels: " << endl;
     cout << this->labels << endl;
     cout << endl;
+}
+Eigen::MatrixXd Dataloader::getData() {
+    return this->data;
+}
+Eigen::MatrixXd Dataloader::getLabels() {
+    return this->labels;
+}
+
+int Dataloader::min(long a, int b) {
+    if (a < b) {
+            return a;
+        }
+        return b;
 }
