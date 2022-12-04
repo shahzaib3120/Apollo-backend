@@ -20,13 +20,10 @@ protected:
     Eigen::MatrixXd gradients;
     Eigen::MatrixXd weightsGradients;
     Eigen::MatrixXd biasesGradients;
-    virtual void forward() = 0;
-    virtual void backward() = 0;
-    virtual void update() = 0;
-    virtual void forward(Eigen::MatrixXd inputs) = 0;
-    virtual void backward(Eigen::MatrixXd gradients) = 0;
+
 public:
     Layer(int numNeurons, int numInputs, int numOutputs);
+    Layer(int numNeurons, int* shape);
     // TODO: CHECK IF PARENT CLASS ARRAY CAN HAVE CHILD ELEMENTS
 //    Layer(Eigen::MatrixXd inputs);
     void setInputs(Eigen::MatrixXd inputs);
@@ -46,8 +43,15 @@ public:
     int getNumNeurons();
     int getNumInputs();
     int getNumOutputs();
+    int* getOutputShape();
+    int* getInputShape();
+    void initializeWeights();
+    void initializeBiases();
     Eigen::MatrixXd getWeightsGradients();
     Eigen::MatrixXd getBiasesGradients();
+    virtual void update(float learningRate) = 0;
+    virtual void forward(Eigen::MatrixXd inputs) = 0;
+    virtual void backward(Eigen::MatrixXd gradients) = 0;
 };
 
 

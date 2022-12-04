@@ -13,6 +13,8 @@ private:
 public:
     Sigmoid();
     Sigmoid(Eigen::MatrixXd inputs);
+    Sigmoid(int numInputs, int numOutputs);
+    Sigmoid(int* shape);
     void setInputs(Eigen::MatrixXd inputs);
     Eigen::MatrixXd getOutputs();
     Eigen::MatrixXd getGradients();
@@ -20,7 +22,11 @@ public:
     void setOutputs(Eigen::MatrixXd outputs);
     void forward();
     void backward();
+    void update(float learningRate);
     void forward(Eigen::MatrixXd inputs);
     void backward(Eigen::MatrixXd gradients);
+    int* getInputShape();
+    int* getOutputShape();
+
 };
 #endif //APOLLO_SIGMOID_H

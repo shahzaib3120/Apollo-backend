@@ -7,15 +7,12 @@
 
 #include "Layer.h"
 class Dense:public Layer {
-private:
-    void forward() override;
-    void backward() override;
-    void update() override;
 public:
     Dense(int numNeurons, int numInputs, int numOutputs);
+    Dense(int numNeurons, int* shape);
     void forward(Eigen::MatrixXd inputs) override;
     void backward(Eigen::MatrixXd gradients) override;
-
+    void update(float learningRate) override;
 };
 
 
