@@ -26,10 +26,10 @@ private:
     void backward(Eigen::MatrixXd gradients);
     void update(float learningRate);
     double accuracy(Eigen::MatrixXd outputs, Eigen::MatrixXd targets);
-    void lossFunction(Eigen::MatrixXd outputs, Eigen::MatrixXd targets, enum lossFunction loss);
+    void lossFunction(Eigen::MatrixXd& outputs, Eigen::MatrixXd& targets, enum lossFunction loss);
     Eigen::MatrixXd gradients;
     float loss;
-    bool compareShapes(int* shape1, int* shape2);
+    static bool compareShapes(int const* shape1, int const* shape2);
 public:
     Model();
     Model(int* inputShape, bool verbose, float learningRate = 0.001, int numClasses=1);

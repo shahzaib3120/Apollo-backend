@@ -34,8 +34,8 @@ void Softmax::setOutputs(Eigen::MatrixXd outputs) {
 //    this->outputs = exps.array().rowwise() / sum.array();
 //}
 //void Softmax::backward() {
-//    Eigen::MatrixXd sum = this->gradients.colwise().sum();
-//    this->gradients = this->gradients.array().rowwise() - sum.array();
+//    Eigen::MatrixXd sum = this->gradientsOut.colwise().sum();
+//    this->gradientsOut = this->gradientsOut.array().rowwise() - sum.array();
 //}
 //void Softmax::forward(Eigen::MatrixXd inputs) {
 //    this->inputs = inputs;
@@ -43,10 +43,10 @@ void Softmax::setOutputs(Eigen::MatrixXd outputs) {
 //    Eigen::MatrixXd sum = exps.colwise().sum();
 //    this->outputs = exps.array().rowwise() / sum.array();
 //}
-//void Softmax::backward(Eigen::MatrixXd gradients) {
-//    this->gradients = gradients;
-//    Eigen::MatrixXd sum = this->gradients.colwise().sum();
-//    this->gradients = this->gradients.array().rowwise() - sum.array();
+//void Softmax::backward(Eigen::MatrixXd gradientsOut) {
+//    this->gradientsOut = gradientsOut;
+//    Eigen::MatrixXd sum = this->gradientsOut.colwise().sum();
+//    this->gradientsOut = this->gradientsOut.array().rowwise() - sum.array();
 //}
 
 // Todo: check operations on matrices and arrays
