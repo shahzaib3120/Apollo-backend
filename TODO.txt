@@ -1,8 +1,8 @@
 TODO:
 Training:
-    Check training process and make sure it is working correctly
     Load hdf5 file
     Change pass by value to pass by reference for speed
+    Compute validation accuracy
 General:
     Add proper exception handling for trainData file missing
     Add comments for arguments

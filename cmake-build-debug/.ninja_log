@@ -55,3 +55,17 @@
 17	4452	6923949070519246	CMakeFiles/Apollo.dir/main.cpp.obj	3208fa4f16139151
 24	5158	6923949077559427	CMakeFiles/Apollo.dir/Model/Model.cpp.obj	f4c2cf2dcf1f0c24
 5158	12406	6923949149807334	Apollo.exe	9330c20521659ab5
+8	2883	6924156752850625	CMakeFiles/Apollo.dir/main.cpp.obj	3208fa4f16139151
+72	3643	6924156760410625	CMakeFiles/Apollo.dir/Model/Model.cpp.obj	f4c2cf2dcf1f0c24
+81	3672	6924156760720613	CMakeFiles/Apollo.dir/Utils/Dataloader.cpp.obj	34e5a9f03cea71b
+59	4128	6924156765260627	CMakeFiles/Apollo.dir/Loss/Loss.cpp.obj	ccbe7e98148a50c6
+49	7760	6924156799046419	CMakeFiles/Apollo.dir/Layers/Dense.cpp.obj	95aa3f11d5af37fa
+7761	12467	6924156848636415	Apollo.exe	9330c20521659ab5
+6	2249	6924160670187391	CMakeFiles/Apollo.dir/main.cpp.obj	3208fa4f16139151
+11	2734	6924160675007405	CMakeFiles/Apollo.dir/Model/Model.cpp.obj	f4c2cf2dcf1f0c24
+15	2829	6924160675957221	CMakeFiles/Apollo.dir/Utils/Dataloader.cpp.obj	34e5a9f03cea71b
+2830	5643	6924160704027348	Apollo.exe	9330c20521659ab5
+10	3721	6924166074828209	CMakeFiles/Apollo.dir/main.cpp.obj	3208fa4f16139151
+26	4283	6924166080438195	CMakeFiles/Apollo.dir/Model/Model.cpp.obj	f4c2cf2dcf1f0c24
+16	7471	6924166112228509	CMakeFiles/Apollo.dir/Layers/Dense.cpp.obj	95aa3f11d5af37fa
+7471	10253	6924166140032212	Apollo.exe	9330c20521659ab5

@@ -9,9 +9,9 @@
 Model::Model() {
     this->layers = {};
 }
-Model::Model(int *inputShape, bool verbose, float learningRate, int numClasses) {
+Model::Model(int *inputShape, bool verb, float learningRate, int numClasses) {
     this->inputShape = inputShape;
-    this->verbose = verbose;
+    this->verbose = verb;
     this->learningRate = learningRate;
     this->numClasses = numClasses;
 }
@@ -23,7 +23,7 @@ void Model::compile() {
         cout<<"Compiling model..."<<endl;
     }
 // check if layers are added
-    assert(this->layers.size() > 0);
+    assert(this->layers.empty() == false);
 // check if input shape is set
     assert(this->inputShape != nullptr);
     // loop over layers and check if input shape of next layer is equal to output shape of previous layer
@@ -87,36 +87,20 @@ void Model::forward(Eigen::MatrixXd inputs) {
             layer = sigmoid;
         }
     }
-//    for(int i=0; i<this->layers.size(); i++){
-//        if(this->layers[i].index() == 0){
-//            Dense dense = get<Dense>(this->layers[i]);
-//            dense.forward(inputs);
-//            inputs = dense.getOutputs();
-////            // update the layer in the layers vector
-//            this->layers[i] = dense;
-//        }
-//        else if(this->layers[i].index() == 1){
-//            Sigmoid sigmoid = get<Sigmoid>(this->layers[i]);
-//            sigmoid.forward(inputs);
-//            inputs = sigmoid.getOutputs();
-////            // update the layer in the layers vector
-//            this->layers[i] = sigmoid;
-//        }
-//    }
 }
-void Model::backward(Eigen::MatrixXd gradients) {
+void Model::backward(Eigen::MatrixXd gradientsIn) {
     for(int i=this->layers.size()-1; i>=0; i--){
         if(this->layers[i].index() == 0){
             Dense dense = get<Dense>(this->layers[i]);
-            dense.backward(gradients);
-            gradients = dense.getGradients();
+            dense.backward(gradientsIn);
+            gradientsIn = dense.getGradients();
             // update the layer in the layers vector
             this->layers[i] = dense;
         }
         else if(this->layers[i].index() == 1){
             Sigmoid sigmoid = get<Sigmoid>(this->layers[i]);
-            sigmoid.backward(gradients);
-            gradients = sigmoid.getGradients();
+            sigmoid.backward(gradientsIn);
+            gradientsIn = sigmoid.getGradients();
             // update the layer in the layers vector
             this->layers[i] = sigmoid;
         }
@@ -137,40 +121,32 @@ void Model::update(float learningRate) {
             layer = sigmoid;
         }
     }
-//    for(int i=0; i<this->layers.size(); i++){
-//        if(this->layers[i].index() == 0){
-//            Dense dense = get<Dense>(this->layers[i]);
-//            dense.update(learningRate);
-//            // update the layer in the layers vector
-//            this->layers[i] = dense;
-//        }
-//        else if(this->layers[i].index() == 1){
-//            continue;
-//        }
-//    }
 }
-void Model::fit(Eigen::MatrixXd trainX, Eigen::MatrixXd trainY, Eigen::MatrixXd valX,Eigen::MatrixXd valY, int epochs,enum lossFunction loss, bool verbose) {
-    this->verbose = verbose;
+
+// TODO: compute validation accuracy and loss
+
+void Model::fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY, int epochs, enum lossFunction lossType, bool verb) {
+    this->verbose = verb;
     if(this->verbose){
         cout<<"Training model..."<<endl;
     }
     for(int i=0; i<epochs; i++){
-        // compute validation loss and accuracy
+        // compute validation lossType and accuracy
         this->forward(valX);
         Eigen::MatrixXd valOutputs = this->layers[this->layers.size()-1].index() == 0 ? get<Dense>(this->layers[this->layers.size()-1]).getOutputs() : get<Sigmoid>(this->layers[this->layers.size()-1]).getOutputs();this->forward(trainX);
-        double valLoss = this->validationLoss(valY, valOutputs, loss);
-        double valAccuracy = this->accuracy(valOutputs, valY);
+        double valLoss = this->validationLoss(valY, valOutputs, lossType);
+        double valAccuracy = accuracy(valOutputs, valY);
 
         // compute training forward prop
         this->forward(trainX);
         Eigen::MatrixXd outputs = this->layers[this->layers.size()-1].index() == 0 ? get<Dense>(this->layers[this->layers.size()-1]).getOutputs() : get<Sigmoid>(this->layers[this->layers.size()-1]).getOutputs();this->forward(trainX);
-        this->lossFunction(outputs, valY, loss);
+        this->lossFunction(outputs, valY, lossType);
 
         // TODO: check dW and db
         // print the stats
         if(this->verbose){
             cout << "===================================================" << endl;
-            cout<<"Epoch: "<<i+1<<"/"<<epochs<<",Training Loss: "<<this->loss<<",Training Accuracy: "<< this->accuracy(outputs, trainY)<<endl;
+            cout<<"Epoch: "<<i+1<<"/"<<epochs<<",Training Loss: "<<this->loss<<",Training Accuracy: "<< accuracy(outputs, trainY)<<endl;
             cout<< "Validation Loss: "<<valLoss<<" , Validation Accuracy: "<<valAccuracy<<endl;
             cout << "===================================================" << endl;
         }
@@ -181,20 +157,20 @@ void Model::fit(Eigen::MatrixXd trainX, Eigen::MatrixXd trainY, Eigen::MatrixXd 
         cout<<"Model trained successfully"<<endl;
     }
 }
- void Model::fit(Eigen::MatrixXd inputs, Eigen::MatrixXd labels, int epochs, enum lossFunction loss , bool verbose) {
-    this->verbose = verbose;
+ void Model::fit(Eigen::MatrixXd &inputs, Eigen::MatrixXd &labels, int epochs, enum lossFunction lossType , bool verb) {
+    this->verbose = verb;
     if(this->verbose){
         cout<<"Training model..."<<endl;
     }
     for(int i=0; i<epochs; i++){
         this->forward(inputs);
         Eigen::MatrixXd outputs = this->layers[this->layers.size()-1].index() == 0 ? get<Dense>(this->layers[this->layers.size()-1]).getOutputs() : get<Sigmoid>(this->layers[this->layers.size()-1]).getOutputs();
-        this->lossFunction(outputs, labels, loss);
+        this->lossFunction(outputs, labels, lossType);
         // TODO: check dW and db
         // print the stats
         if(this->verbose){
             cout << "===================================================" << endl;
-            cout<<"Epoch: "<<i+1<<"/"<<epochs<<", Loss: "<<this->loss<<", Accuracy: "<< this->accuracy(outputs, labels)<<endl;
+            cout<<"Epoch: "<<i+1<<"/"<<epochs<<", Loss: "<<this->loss<<", Accuracy: "<< accuracy(outputs, labels)<<endl;
             cout << "===================================================" << endl;
         }
         this->backward(this->gradients);
@@ -222,9 +198,9 @@ Eigen::MatrixXd Model::predict(Eigen::MatrixXd inputs) {
     Eigen::MatrixXd outputs = this->layers[this->layers.size()-1].index() == 0 ? get<Dense>(this->layers[this->layers.size()-1]).getOutputs() : get<Sigmoid>(this->layers[this->layers.size()-1]).getOutputs();
     return outputs;
 }
-void Model::evaluate(Eigen::MatrixXd inputs, Eigen::MatrixXd labels, enum lossFunction loss) {
+void Model::evaluate(Eigen::MatrixXd inputs, Eigen::MatrixXd labels, enum lossFunction lossType) {
     Eigen::MatrixXd outputs = this->predict(inputs);
-    this->lossFunction(outputs, labels, loss);
+    this->lossFunction(outputs, labels, lossType);
     cout<<"Loss: "<<this->loss<<endl;
 }
 double Model::accuracy(Eigen::MatrixXd outputs, Eigen::MatrixXd labels) {
@@ -270,12 +246,12 @@ bool Model::compareShapes(int const *shape1, int const *shape2) {
     return false;
 }
 
-double Model::validationLoss(Eigen::MatrixXd &outputs, Eigen::MatrixXd &targets, enum lossFunction loss) {
-    if(loss == MSE){
+double Model::validationLoss(Eigen::MatrixXd &outputs, Eigen::MatrixXd &targets, enum lossFunction lossType) {
+    if(lossType == MSE){
         this->gradients = Loss::MSE(outputs, targets);
-        return 0;
+        return 0.0;
     }
-    else if(loss == BCE){
+    else if(lossType == BCE){
         auto [grad, lossVal] = Loss::BCE(outputs, targets);
         return lossVal;
     }

@@ -1,8 +1,6 @@
 #include <iostream>
-#include <Eigen/Dense>
 #include "Utils/Dataloader.h"
 #include "Model/Model.h"
-#include "Loss/Loss.h"
 using namespace std;
 int main() {
     string path = "E:/Learning-E/Apollo/Dataset/emails-formatted.csv";
@@ -17,7 +15,7 @@ int main() {
     // print shape of trainLabels
     cout << "Labels shape: " << labelShape[0] << " " << labelShape[1] << endl;
     // invert shape
-    Model* model =  new Model(shape, true, 0.01, 1);
+    auto* model =  new Model(shape, true, 0.01, 1);
     MultiType d1 = Dense(3, shape);
     model->addLayer(&d1);
     MultiType s1 = Sigmoid(model->getLastLayerOutputShape());

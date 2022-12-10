@@ -23,9 +23,9 @@ private:
     float learningRate;
     int* inputShape;
     void forward(Eigen::MatrixXd inputs);
-    void backward(Eigen::MatrixXd gradients);
+    void backward(Eigen::MatrixXd gradientsIn);
     void update(float learningRate);
-    double accuracy(Eigen::MatrixXd outputs, Eigen::MatrixXd targets);
+    static double accuracy(Eigen::MatrixXd outputs, Eigen::MatrixXd targets);
     void lossFunction(Eigen::MatrixXd& outputs, Eigen::MatrixXd& targets, enum lossFunction loss);
     double validationLoss(Eigen::MatrixXd& outputs, Eigen::MatrixXd& targets, enum lossFunction loss);
     Eigen::MatrixXd gradients;
@@ -33,13 +33,13 @@ private:
     static bool compareShapes(int const* shape1, int const* shape2);
 public:
     Model();
-    Model(int* inputShape, bool verbose, float learningRate = 0.001, int numClasses=1);
+    Model(int* inputShape, bool verb, float learningRate = 0.001, int numClasses=1);
     void addLayer(MultiType *layer);
     void compile();
-    void fit(Eigen::MatrixXd inputs, Eigen::MatrixXd labels, int epochs,enum lossFunction, bool verbose);
-    void fit(Eigen::MatrixXd trainX, Eigen::MatrixXd trainY, Eigen::MatrixXd valX,Eigen::MatrixXd valY, int epochs,enum  lossFunction, bool verbose);
+    void fit(Eigen::MatrixXd &inputs, Eigen::MatrixXd &labels, int epochs,enum lossFunction, bool verb);
+    void fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX,Eigen::MatrixXd &valY, int epochs,enum  lossFunction, bool verb);
     Eigen::MatrixXd predict(Eigen::MatrixXd inputs);
-    void evaluate(Eigen::MatrixXd inputs, Eigen::MatrixXd labels, enum lossFunction loss);
+    void evaluate(Eigen::MatrixXd inputs, Eigen::MatrixXd labels, enum lossFunction lossType);
     void setLearningRate(float learningRate);
     float getLearningRate();
     void setVerbose(bool verbose);

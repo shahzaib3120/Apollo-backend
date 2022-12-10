@@ -8,7 +8,7 @@
 #include <vector>
 using namespace std;
 Dataloader::Dataloader(Eigen::MatrixXd data, Eigen::MatrixXd labels, int batchSize) {
-    this->numBatches = data.rows() / batchSize;
+    this->numBatches = ((int)data.rows() / batchSize);
     // divide trainData into batches
     this->trainData = Eigen::MatrixXd::Random(this->numBatches, batchSize);
     this->trainLabels = Eigen::MatrixXd::Random(this->numBatches, batchSize);
@@ -23,14 +23,14 @@ Dataloader::Dataloader(Eigen::MatrixXd data, Eigen::MatrixXd labels, int batchSi
 }
 // for binary classification
 Dataloader::Dataloader(Eigen::MatrixXd data, Eigen::MatrixXd labels) {
-    this->numBatches = data.rows();
+    this->numBatches = (int)data.rows();
     // flatten trainData to shape rows*cols, 1
     this->trainData  = data.reshaped(data.rows() * data.cols(), 1);
     this->trainLabels = labels;
 }
 // TODO: for multiclass classification
 
-Dataloader::Dataloader(std::string const path) {
+Dataloader::Dataloader(std::string const &path) {
     // Args:
     //     path: path to the csv file
     // Format:
@@ -71,8 +71,8 @@ Dataloader::Dataloader(std::string const path) {
         labels.push_back(label);
         linesRead++;
     }
-    this->trainLabels = Eigen::MatrixXd::Random(1, labels.size());
-    this->trainData = Eigen::MatrixXd::Random(data[0].size(), data.size());
+    this->trainLabels = Eigen::MatrixXd::Random(1, (unsigned int)labels.size());
+    this->trainData = Eigen::MatrixXd::Random((unsigned int)data[0].size(), (unsigned int)data.size());
     // store trainData in Eigen::MatrixXd with shape (trainData, trainingsamples)
     for (int i = 0; i < data[0].size(); i++) {
         for (int j = 0; j < data.size(); j++) {
@@ -83,12 +83,12 @@ Dataloader::Dataloader(std::string const path) {
     for (int i = 0; i < labels.size(); i++) {
         this->trainLabels(0, i) = labels[i][0];
     }
-    this->numBatches = data.size();
-    this->batchSize = data[0].size();
+    this->numBatches = (int)data.size();
+    this->batchSize = (int)data[0].size();
     this->currentBatch = 0;
 }
 
-Dataloader::Dataloader(std::string path, float trainSplit) {
+Dataloader::Dataloader(std::string const &path, float trainSplit) {
     // Args:
     //     path: path to the csv file
     //     trainSplit: percentage of trainData to be used for training
@@ -130,10 +130,10 @@ Dataloader::Dataloader(std::string path, float trainSplit) {
         labels.push_back(label);
         linesRead++;
     }
-    int trainSize = (int) (data.size() * trainSplit);
-    int valSize = data.size() - trainSize;
+    int trainSize = (int)(data.size() * trainSplit);
+    int valSize = (int)data.size() - trainSize;
     this->trainLabels = Eigen::MatrixXd::Random(1, trainSize);
-    this->trainData = Eigen::MatrixXd::Random(data[0].size(), trainSize);
+    this->trainData = Eigen::MatrixXd::Random((int)data[0].size(), trainSize);
     // store trainData in Eigen::MatrixXd with shape (trainData, trainingsamples)
     for (int i = 0; i < data[0].size(); i++) {
         for (int j = 0; j < trainSize; j++) {
@@ -145,9 +145,9 @@ Dataloader::Dataloader(std::string path, float trainSplit) {
         this->trainLabels(0, i) = labels[i][0];
     }
     this->numBatches = trainSize;
-    this->batchSize = data[0].size();
+    this->batchSize = (int)data[0].size();
     this->currentBatch = 0;
-    this->valData = Eigen::MatrixXd::Random(data[0].size(), valSize);
+    this->valData = Eigen::MatrixXd::Random((int)data[0].size(), valSize);
     this->valLabels = Eigen::MatrixXd::Random(1, valSize);
     // store valData in Eigen::MatrixXd with shape (trainData, trainingsamples)
     for (int i = 0; i < data[0].size(); i++) {
@@ -169,10 +169,10 @@ void Dataloader::head(int n) {
 
     // trainData shape = (features, samples)
     // show first n samples
-    for (int i = 0; i < min(trainData.cols(), n); i++) {
+    for (int i = 0; i < min((int)trainData.cols(), n); i++) {
         cout << "Data:" << endl;
         // show first n features
-        for(int j =0; j<min(trainData.rows(), n); j++) {
+        for(int j =0; j<min((int)trainData.rows(), n); j++) {
             cout << this->trainData.col(i)[j] << " ";
         }
         cout << endl;
@@ -180,40 +180,40 @@ void Dataloader::head(int n) {
         cout << this->trainLabels.row(0)[i] << endl;
     }
 }
-int* Dataloader::getTrainDataShape() {
+ int* Dataloader::getTrainDataShape() {
     auto* shape = new int[2];
-    shape[0] = this->trainData.rows();
-    shape[1] = this->trainData.cols();
+    shape[0] = (int)this->trainData.rows();
+    shape[1] = (int)this->trainData.cols();
     return shape;
 }
-int* Dataloader::getTrainLabelsShape() {
+ int* Dataloader::getTrainLabelsShape() {
     auto* shape = new int[2];
-    shape[0] = this->trainLabels.rows();
-    shape[1] = this->trainLabels.cols();
+    shape[0] = (int)this->trainLabels.rows();
+    shape[1] = (int)this->trainLabels.cols();
     return shape;
 }
-int* Dataloader::getValDataShape() {
+ int* Dataloader::getValDataShape() {
     auto* shape = new int[2];
-    shape[0] = this->valData.rows();
-    shape[1] = this->valData.cols();
+    shape[0] = (int)this->valData.rows();
+    shape[1] = (int)this->valData.cols();
     return shape;
 }
-int* Dataloader::getValLabelsShape() {
+ int* Dataloader::getValLabelsShape() {
     auto* shape = new int[2];
-    shape[0] = this->valLabels.rows();
-    shape[1] = this->valLabels.cols();
+    shape[0] = (int)this->valLabels.rows();
+    shape[1] = (int)this->valLabels.cols();
     return shape;
 }
-Eigen::MatrixXd Dataloader::getTrainData() {
+Eigen::MatrixXd &Dataloader::getTrainData() {
     return this->trainData;
 }
-Eigen::MatrixXd Dataloader::getTrainLabels() {
+Eigen::MatrixXd &Dataloader::getTrainLabels() {
     return this->trainLabels;
 }
-Eigen::MatrixXd Dataloader::getValData() {
+Eigen::MatrixXd &Dataloader::getValData() {
     return this->valData;
 }
-Eigen::MatrixXd Dataloader::getValLabels() {
+Eigen::MatrixXd &Dataloader::getValLabels() {
     return this->valLabels;
 }
 

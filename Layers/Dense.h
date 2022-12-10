@@ -11,7 +11,7 @@ public:
     Dense(int numNeurons, int numInputs, int numOutputs);
     Dense(int numNeurons, int* shape);
     void forward(Eigen::MatrixXd inputs) override;
-    void backward(Eigen::MatrixXd gradients) override;
+    void backward(Eigen::MatrixXd gradientsIn) override;
     void update(float learningRate) override;
 };
 

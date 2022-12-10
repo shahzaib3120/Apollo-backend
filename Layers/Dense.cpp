@@ -18,10 +18,10 @@ void Dense::forward(Eigen::MatrixXd inputs) {
     this->inputs = inputs;
     this->outputs = this->weights * this->inputs + this->biases;
 }
-void Dense::backward(Eigen::MatrixXd gradients) {
-    this->weightsGradients = gradients * this->inputs.transpose();
-    this->biasesGradients = gradients;
-    this->gradients = this->weights.transpose() * gradients;
+void Dense::backward(Eigen::MatrixXd gradientsIn) {
+    this->weightsGradients = gradientsIn * this->inputs.transpose();
+    this->biasesGradients = gradientsIn;
+    this->gradients = this->weights.transpose() * gradientsIn;
 }
 void Dense::update(float learningRate) {
     this->weights = this->weights - learningRate * this->weightsGradients;
