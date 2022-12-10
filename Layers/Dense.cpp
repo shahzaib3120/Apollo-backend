@@ -22,11 +22,6 @@ void Dense::backward(Eigen::MatrixXd gradients) {
     this->weightsGradients = gradients * this->inputs.transpose();
     this->biasesGradients = gradients;
     this->gradients = this->weights.transpose() * gradients;
-//    cout << "Dense backward" << endl;
-//    cout << "weightsGradients: " << endl << this->weightsGradients << endl;
-//    cout << "biasesGradients: " << endl << this->biasesGradients << endl;
-//    cout << "gradientsOut: " << endl << this->gradientsOut << endl;
-
 }
 void Dense::update(float learningRate) {
     this->weights = this->weights - learningRate * this->weightsGradients;

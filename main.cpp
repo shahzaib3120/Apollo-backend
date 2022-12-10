@@ -8,13 +8,13 @@ int main() {
     string path = "E:/Learning-E/Apollo/Dataset/emails-formatted.csv";
 //    string path = "F:/Machine-Learning/Apollo/Dataset/emails-formatted.csv";
 //    string path = "E:/Learning-E/Apollo/Dataset/sampleCircle.csv";
-    Dataloader dataloader(path);
+    Dataloader dataloader(path, 0.8);
     dataloader.head(5);
-    int* shape = dataloader.getDataShape();
-    int* labelShape = dataloader.getLabelsShape();
-    // print shape of data
+    int* shape = dataloader.getTrainDataShape();
+    int* labelShape = dataloader.getTrainLabelsShape();
+    // print shape of trainData
     cout << "Data shape: " << shape[0] << " " << shape[1] << endl;
-    // print shape of labels
+    // print shape of trainLabels
     cout << "Labels shape: " << labelShape[0] << " " << labelShape[1] << endl;
     // invert shape
     Model* model =  new Model(shape, true, 0.01, 1);
@@ -27,7 +27,8 @@ int main() {
     MultiType s2 = Sigmoid(model->getLastLayerOutputShape());
     model->addLayer(&s2);
     model->compile();
-    model->fit(dataloader.getData(), dataloader.getLabels(), 100, BCE, true);
+//    model->fit(dataloader.getTrainData(), dataloader.getTrainLabels(), dataloader.getValData(), dataloader.getValLabels(), 100, BCE, true);
+    model->fit(dataloader.getTrainData(), dataloader.getTrainLabels(), 1000, BCE, true);
 //    // TODO: check if dimension changes would be required for GUI
     return 0;
 }

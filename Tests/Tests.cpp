@@ -21,7 +21,7 @@ void testDataloader(){
     string path = "E:/Learning-E/Apollo/Dataset/emails-formatted.csv";
     Dataloader dataloader(path);
     dataloader.head(10);
-    int* shape = dataloader.getDataShape();
+    int* shape = dataloader.getTrainDataShape();
     cout << "Data shape: " << shape[0] << " " << shape[1] << endl;
 //    dataloader.showLabels();
 }

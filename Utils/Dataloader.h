@@ -8,30 +8,36 @@
 #include <Eigen/Dense>
 class Dataloader {
 private:
-    Eigen::MatrixXd data;
-    Eigen::MatrixXd labels;
+    Eigen::MatrixXd trainData;
+    Eigen::MatrixXd trainLabels;
+    Eigen::MatrixXd valData;
+    Eigen::MatrixXd valLabels;
     int batchSize;
     int numBatches;
     int currentBatch;
-    void readData(std::string path);
     int min(long a, int b);
 public:
     Dataloader(Eigen::MatrixXd data, Eigen::MatrixXd labels, int batchSize);
     Dataloader(Eigen::MatrixXd data, Eigen::MatrixXd labels);
-    // read data from exel files
-    // NOTE: Make sure the file contains labels in the first column
-    Dataloader(std::string path);
+    // read trainData from exel files
+    // NOTE: Make sure the file contains trainLabels in the first column
+    Dataloader(std::string const path);
+    // dataloader for csv files with train and validation split
+    Dataloader(std::string path, float trainSplit);
     Eigen::MatrixXd nextBatch();
     Eigen::MatrixXd nextBatch(int batchNumber);
     Eigen::MatrixXd getBatch(int batchNumber);
     Eigen::MatrixXd getBatch();
-    Eigen::MatrixXd getLabels();
-    Eigen::MatrixXd getData();
+    Eigen::MatrixXd getTrainLabels();
+    Eigen::MatrixXd getTrainData();
+    Eigen::MatrixXd getValData();
+    Eigen::MatrixXd getValLabels();
     Eigen::MatrixXd getLabels(int batchNumber);
     void head(int n);
-    int* getDataShape();
-    int* getLabelsShape();
-    void showLabels();
+    int* getTrainDataShape();
+    int* getTrainLabelsShape();
+    int* getValDataShape();
+    int* getValLabelsShape();
 
 };
 

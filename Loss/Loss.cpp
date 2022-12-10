@@ -4,7 +4,7 @@
 #include <Eigen/Dense>
 #include "Loss.h"
 #include <iostream>
-Eigen::MatrixXd Loss::MSE(Eigen::MatrixXd outputs, Eigen::MatrixXd targets){
+Eigen::MatrixXd Loss::MSE(Eigen::MatrixXd &outputs, Eigen::MatrixXd &targets){
     return (outputs - targets).array().square();
 }
 std::tuple<Eigen::MatrixXd, float> Loss::BCE(Eigen::MatrixXd &outputs, Eigen::MatrixXd &targets) {

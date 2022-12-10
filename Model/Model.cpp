@@ -149,7 +149,39 @@ void Model::update(float learningRate) {
 //        }
 //    }
 }
-void Model::fit(Eigen::MatrixXd inputs, Eigen::MatrixXd labels, int epochs, enum lossFunction loss , bool verbose) {
+void Model::fit(Eigen::MatrixXd trainX, Eigen::MatrixXd trainY, Eigen::MatrixXd valX,Eigen::MatrixXd valY, int epochs,enum lossFunction loss, bool verbose) {
+    this->verbose = verbose;
+    if(this->verbose){
+        cout<<"Training model..."<<endl;
+    }
+    for(int i=0; i<epochs; i++){
+        // compute validation loss and accuracy
+        this->forward(valX);
+        Eigen::MatrixXd valOutputs = this->layers[this->layers.size()-1].index() == 0 ? get<Dense>(this->layers[this->layers.size()-1]).getOutputs() : get<Sigmoid>(this->layers[this->layers.size()-1]).getOutputs();this->forward(trainX);
+        double valLoss = this->validationLoss(valY, valOutputs, loss);
+        double valAccuracy = this->accuracy(valOutputs, valY);
+
+        // compute training forward prop
+        this->forward(trainX);
+        Eigen::MatrixXd outputs = this->layers[this->layers.size()-1].index() == 0 ? get<Dense>(this->layers[this->layers.size()-1]).getOutputs() : get<Sigmoid>(this->layers[this->layers.size()-1]).getOutputs();this->forward(trainX);
+        this->lossFunction(outputs, valY, loss);
+
+        // TODO: check dW and db
+        // print the stats
+        if(this->verbose){
+            cout << "===================================================" << endl;
+            cout<<"Epoch: "<<i+1<<"/"<<epochs<<",Training Loss: "<<this->loss<<",Training Accuracy: "<< this->accuracy(outputs, trainY)<<endl;
+            cout<< "Validation Loss: "<<valLoss<<" , Validation Accuracy: "<<valAccuracy<<endl;
+            cout << "===================================================" << endl;
+        }
+        this->backward(this->gradients);
+        this->update(this->learningRate);
+    }
+    if(this->verbose){
+        cout<<"Model trained successfully"<<endl;
+    }
+}
+ void Model::fit(Eigen::MatrixXd inputs, Eigen::MatrixXd labels, int epochs, enum lossFunction loss , bool verbose) {
     this->verbose = verbose;
     if(this->verbose){
         cout<<"Training model..."<<endl;
@@ -183,7 +215,6 @@ void Model::lossFunction(Eigen::MatrixXd& outputs, Eigen::MatrixXd& targets, enu
         this->gradients = grad;
 //        cout << "Grad: " << endl << this->gradientsOut << endl;
         this->loss = lossVal;
-        // TODO : loss BECOMES NULL AFTERWARDS (fixed)
     }
 }
 Eigen::MatrixXd Model::predict(Eigen::MatrixXd inputs) {
@@ -239,4 +270,14 @@ bool Model::compareShapes(int const *shape1, int const *shape2) {
     return false;
 }
 
+double Model::validationLoss(Eigen::MatrixXd &outputs, Eigen::MatrixXd &targets, enum lossFunction loss) {
+    if(loss == MSE){
+        this->gradients = Loss::MSE(outputs, targets);
+        return 0;
+    }
+    else if(loss == BCE){
+        auto [grad, lossVal] = Loss::BCE(outputs, targets);
+        return lossVal;
+    }
+}
 
