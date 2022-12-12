@@ -31,6 +31,7 @@ private:
     Eigen::MatrixXd gradients;
     float loss;
     static bool compareShapes(int const* shape1, int const* shape2);
+    float startTime;
 public:
     Model();
     Model(int* inputShape, bool verb, float learningRate = 0.001, int numClasses=1);

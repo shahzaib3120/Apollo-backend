@@ -14,12 +14,12 @@ protected:
     float gamma=0.9;
     float learningRate=0.01;
     Eigen::MatrixXd weights;
-    Eigen::MatrixXd biases;
+    Eigen::VectorXd biases;
     Eigen::MatrixXd inputs;
     Eigen::MatrixXd outputs;
     Eigen::MatrixXd gradients;
     Eigen::MatrixXd weightsGradients;
-    Eigen::MatrixXd biasesGradients;
+    Eigen::VectorXd biasesGradients;
 
 public:
     Layer(int numNeurons, int numInputs, int numOutputs);
@@ -30,9 +30,9 @@ public:
     Eigen::MatrixXd getOutputs();
     Eigen::MatrixXd getGradients();
     Eigen::MatrixXd getWeights();
-    Eigen::MatrixXd getBiases();
+    Eigen::VectorXd getBiases();
     void setWeights(Eigen::MatrixXd weights);
-    void setBiases(Eigen::MatrixXd biases);
+    void setBiases(Eigen::VectorXd biases);
     void setGradients(Eigen::MatrixXd gradients);
     void setWeightsGradients(Eigen::MatrixXd weightsGradients);
     void setBiasesGradients(Eigen::MatrixXd biasesGradients);
@@ -48,7 +48,7 @@ public:
     void initializeWeights();
     void initializeBiases();
     Eigen::MatrixXd getWeightsGradients();
-    Eigen::MatrixXd getBiasesGradients();
+    Eigen::VectorXd getBiasesGradients();
     virtual void update(float learningRate) = 0;
     virtual void forward(Eigen::MatrixXd inputs) = 0;
     virtual void backward(Eigen::MatrixXd gradients) = 0;

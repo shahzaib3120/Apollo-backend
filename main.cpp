@@ -4,6 +4,8 @@
 using namespace std;
 int main() {
     string path = "E:/Learning-E/Apollo/Dataset/emails-formatted.csv";
+//    string path = "E:/Learning-E/Apollo/Dataset/winequality-red.csv";
+//    string path = "E:/Learning-E/Apollo/Dataset/data.csv";
 //    string path = "F:/Machine-Learning/Apollo/Dataset/emails-formatted.csv";
 //    string path = "E:/Learning-E/Apollo/Dataset/sampleCircle.csv";
     Dataloader dataloader(path, 0.8);
@@ -25,8 +27,9 @@ int main() {
     MultiType s2 = Sigmoid(model->getLastLayerOutputShape());
     model->addLayer(&s2);
     model->compile();
-//    model->fit(dataloader.getTrainData(), dataloader.getTrainLabels(), dataloader.getValData(), dataloader.getValLabels(), 100, BCE, true);
-    model->fit(dataloader.getTrainData(), dataloader.getTrainLabels(), 1000, BCE, true);
+    model->fit(dataloader.getTrainData(), dataloader.getTrainLabels(), dataloader.getValData(), dataloader.getValLabels(), 100, BCE, true);
+//    model->fit(dataloader.getTrainData(), dataloader.getTrainLabels(), 1000, BCE, true);
 //    // TODO: check if dimension changes would be required for GUI
+    system("pause");
     return 0;
 }
