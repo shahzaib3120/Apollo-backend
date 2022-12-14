@@ -1,4 +1,4 @@
-# Install script for directory: E:/Learning-E/Apollo
+# Install script for directory: F:/Machine-Learning/Apollo
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "E:/Learning-E/Apollo/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "F:/Machine-Learning/Apollo/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
