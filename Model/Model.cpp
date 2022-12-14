@@ -274,5 +274,6 @@ double Model::validationLoss(Eigen::MatrixXd &outputs, Eigen::MatrixXd &targets,
         auto [grad, lossVal] = Loss::BCE(outputs, targets);
         return lossVal;
     }
+    return 0.0;
 }
 
