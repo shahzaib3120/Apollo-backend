@@ -7,6 +7,7 @@ using namespace std;
 int main(){
 //    testSigmoid();
 //    testDataloader();
-    testBCE();
+//    testBCE();
+    testHighFive();
     return 0;
 }

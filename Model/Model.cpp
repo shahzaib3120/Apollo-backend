@@ -8,6 +8,8 @@
 #include <cassert>
 #include "iomanip"
 #include <chrono>
+#include <fstream>
+
 Model::Model() {
     this->layers = {};
 }
@@ -277,3 +279,18 @@ double Model::validationLoss(Eigen::MatrixXd &outputs, Eigen::MatrixXd &targets,
     return 0.0;
 }
 
+
+// Model save
+void Model::saveModel(std::string path) {
+    // TBD
+}
+
+void Model::saveData(std::string filename, Eigen::MatrixXd matrix) {
+    const static Eigen::IOFormat CSVFormat(Eigen::FullPrecision, Eigen::DontAlignCols, ", ", "\n");
+    ofstream file(filename);
+    if (file.is_open())
+    {
+        file << matrix.format(CSVFormat);
+        file.close();
+    }
+}

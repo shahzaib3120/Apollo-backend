@@ -32,6 +32,7 @@ private:
     float loss;
     static bool compareShapes(int const* shape1, int const* shape2);
     float startTime;
+    void saveData(string filename, Eigen::MatrixXd matrix);
 public:
     Model();
     Model(int* inputShape, bool verb, float learningRate = 0.001, int numClasses=1);
@@ -51,11 +52,12 @@ public:
     int* getInputShape();
     void setLayers(vector<variant<Dense,Sigmoid>> layers);
     vector<variant<Dense,Sigmoid>> getLayers();
+    int* getLastLayerOutputShape();
+    int* getLastLayerInputShape();
+    // To be implemented
     void summary();
     void saveModel(std::string path);
     void loadModel(std::string path);
-    int* getLastLayerOutputShape();
-    int* getLastLayerInputShape();
 };
 
 

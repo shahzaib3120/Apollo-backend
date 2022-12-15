@@ -7,4 +7,6 @@
 void testSigmoid();
 void testDataloader();
 void testBCE();
+void testHighFive();
+void testTrain();
 #endif //APOLLO_TESTS_H
