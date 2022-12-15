@@ -1,4 +1,7 @@
-cmake-build-debug
+/cmake-build-debug
+/.vs
+/.vscode
+/out
 *.exe
 *.out
 *.app
