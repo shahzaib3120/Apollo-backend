@@ -38,8 +38,12 @@ public:
     Model(int* inputShape, bool verb, float learningRate = 0.001, int numClasses=1);
     void addLayer(MultiType *layer);
     void compile();
+
     void fit(Eigen::MatrixXd &inputs, Eigen::MatrixXd &labels, int epochs,enum lossFunction, bool verb);
     void fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX,Eigen::MatrixXd &valY, int epochs,enum  lossFunction, bool verb);
+    void fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX,Eigen::MatrixXd &valY, int epochs,enum  lossFunction, bool verb, bool saveEpoch, string filename);
+    void fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX,Eigen::MatrixXd &valY, int epochs,enum  lossFunction, bool verb, bool saveEpoch, string filename, bool earlyStopping, int threshold);
+
     Eigen::MatrixXd predict(Eigen::MatrixXd inputs);
     void evaluate(Eigen::MatrixXd inputs, Eigen::MatrixXd labels, enum lossFunction lossType);
     void setLearningRate(float learningRate);

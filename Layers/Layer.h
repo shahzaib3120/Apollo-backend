@@ -8,13 +8,11 @@
 #include <fstream>
 #include <string>
 
-
 class Layer {
 protected:
     int numNeurons;
     int numInputs;
     int numOutputs;
-    float gamma=0.9;
     float learningRate=0.01;
     Eigen::MatrixXd weights;
     Eigen::VectorXd biases;

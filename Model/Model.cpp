@@ -180,6 +180,133 @@ void Model::fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixX
         system("pause");
     }
 }
+
+void Model::fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY, int epochs, enum lossFunction lossType, bool verb, bool saveEpoch, string savePath) {
+    this->verbose = verb;
+    // set start time
+    auto start = chrono::high_resolution_clock::now();
+    for(int i=0; i<epochs; i++){
+        // compute validation lossType and accuracy
+        this->forward(valX);
+        Eigen::MatrixXd valOutputs = this->layers[this->layers.size()-1].index() == 0 ? get<Dense>(this->layers[this->layers.size()-1]).getOutputs() : get<Sigmoid>(this->layers[this->layers.size()-1]).getOutputs();this->forward(trainX);
+        double valLoss = this->validationLoss(valOutputs, valY, lossType);
+        double valAccuracy = accuracy(valOutputs, valY);
+
+        // compute training forward prop
+        this->forward(trainX);
+        Eigen::MatrixXd outputs = this->layers[this->layers.size()-1].index() == 0 ? get<Dense>(this->layers[this->layers.size()-1]).getOutputs() : get<Sigmoid>(this->layers[this->layers.size()-1]).getOutputs();this->forward(trainX);
+        this->lossFunction(outputs, trainY, lossType);
+        // print the stats
+        if(this->verbose){
+            // clear the screen
+            system("cls");
+            cout << "Training model ..." << endl;
+            cout<<"Epoch: "<<i+1<<"/"<<epochs << " :" << endl;
+            cout<<left << setw(20) <<"Training Loss: "<< setw(10)<<this->loss<<setw(25) <<" | Training Accuracy: "<<setw(10)<< accuracy(outputs, trainY)<<endl;
+            cout<< left<< setw(20)<<"Validation Loss: "<<setw(10)<<valLoss<<setw(25) <<" | Validation Accuracy: "<<setw(10)<<valAccuracy<<endl;
+//            cout << "----------------------------------------------------------" << endl;
+            // create a progress bar for the training
+            cout << "Training Progress: " << flush;
+            for(int j=0; j<50; j++){
+                if(j < (i+1)*50/epochs){
+                    cout << "#" << flush;
+                }
+                else{
+                    cout << " " << flush;
+                }
+            }
+            cout << " " << (i+1)*100/epochs << "%";
+            // compute eta
+            auto end = chrono::high_resolution_clock::now();
+            auto duration = chrono::duration_cast<chrono::seconds>(end - start);
+            int eta = (duration.count()/(i+1))*(epochs-(i+1));
+            cout << " | ETA: " << eta/3600 << "h " << (eta%3600)/60 << "m " << eta%60 << "s" << endl;
+
+        }
+        this->backward(this->gradients);
+        this->update(this->learningRate);
+
+        if(saveEpoch){
+            this->saveModel(savePath);
+        }
+    }
+    if(this->verbose){
+        cout<<"Model trained successfully"<<endl;
+        system("pause");
+    }
+}
+
+void Model::fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY, int epochs, enum lossFunction lossType, bool verb, bool saveEpoch, string savePath, bool earlyStopping, int threshold) {
+    this->verbose = verb;
+    // set start time
+    auto start = chrono::high_resolution_clock::now();
+    double prevValAccuracy = 0;
+    for(int i=0; i<epochs; i++){
+        // compute validation lossType and accuracy
+        this->forward(valX);
+        Eigen::MatrixXd valOutputs = this->layers[this->layers.size()-1].index() == 0 ? get<Dense>(this->layers[this->layers.size()-1]).getOutputs() : get<Sigmoid>(this->layers[this->layers.size()-1]).getOutputs();this->forward(trainX);
+        double valLoss = this->validationLoss(valOutputs, valY, lossType);
+        double valAccuracy = accuracy(valOutputs, valY);
+        // compute training forward prop
+        this->forward(trainX);
+        Eigen::MatrixXd outputs = this->layers[this->layers.size()-1].index() == 0 ? get<Dense>(this->layers[this->layers.size()-1]).getOutputs() : get<Sigmoid>(this->layers[this->layers.size()-1]).getOutputs();this->forward(trainX);
+        this->lossFunction(outputs, trainY, lossType);
+        // print the stats
+        if(this->verbose){
+            // clear the screen
+            system("cls");
+            cout << "Training model ..." << endl;
+            cout<<"Epoch: "<<i+1<<"/"<<epochs << " :" << endl;
+            cout<<left << setw(20) <<"Training Loss: "<< setw(10)<<this->loss<<setw(25) <<" | Training Accuracy: "<<setw(10)<< accuracy(outputs, trainY)<<endl;
+            cout<< left<< setw(20)<<"Validation Loss: "<<setw(10)<<valLoss<<setw(25) <<" | Validation Accuracy: "<<setw(10)<<valAccuracy<<endl;
+//            cout << "----------------------------------------------------------" << endl;
+            // create a progress bar for the training
+            cout << "Training Progress: " << flush;
+            for(int j=0; j<50; j++){
+                if(j < (i+1)*50/epochs){
+                    cout << "#" << flush;
+                }
+                else{
+                    cout << " " << flush;
+                }
+            }
+            cout << " " << (i+1)*100/epochs << "%";
+            // compute eta
+            auto end = chrono::high_resolution_clock::now();
+            auto duration = chrono::duration_cast<chrono::seconds>(end - start);
+            int eta = (duration.count()/(i+1))*(epochs-(i+1));
+            cout << " | ETA: " << eta/3600 << "h " << (eta%3600)/60 << "m " << eta%60 << "s" << endl;
+
+        }
+        this->backward(this->gradients);
+        this->update(this->learningRate);
+        int thresholdCounter = 0;
+        if(saveEpoch){
+            if(earlyStopping){
+                // if valAccuracy is less than previous valAccuracy in threshold epochs, stop training
+                if(valAccuracy < prevValAccuracy){
+                    thresholdCounter++;
+                    if(thresholdCounter == threshold){
+                        cout << "Early stopping at epoch " << i+1 << endl;
+                        break;
+                    }
+                }else{
+                    this->saveModel(savePath);
+                    prevValAccuracy = valAccuracy;
+                    cout << "Validation accuracy increased to " << valAccuracy << endl;
+                    cout << "Saving model ..." << endl;
+                    thresholdCounter = 0;
+                }
+
+            }
+        }
+    }
+    if(this->verbose){
+        cout<<"Model trained successfully"<<endl;
+        system("pause");
+    }
+}
+
  void Model::fit(Eigen::MatrixXd &inputs, Eigen::MatrixXd &labels, int epochs, enum lossFunction lossType , bool verb) {
     this->verbose = verb;
     if(this->verbose){

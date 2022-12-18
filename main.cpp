@@ -16,7 +16,7 @@ int main() {
 //    dataloader.head(5);
     int* shape = dataloader.getTrainDataShape();
     auto* model =  new Model(shape, true, 0.01, 1);
-    MultiType d1 = Dense(3, shape);
+    MultiType d1 = Dense(5, shape);
     model->addLayer(&d1);
     MultiType s1 = Sigmoid(model->getLastLayerOutputShape());
     model->addLayer(&s1);
@@ -26,11 +26,8 @@ int main() {
     model->addLayer(&s2);
     model->compile();
 //    model->summary();
-    model->fit(dataloader.getTrainData(), dataloader.getTrainLabels(), dataloader.getValData(), dataloader.getValLabels(), 1000, BCE, true);
+    model->fit(dataloader.getTrainData(), dataloader.getTrainLabels(), dataloader.getValData(), dataloader.getValLabels(), 100, BCE, true, true, "F:/Machine-Learning/Apollo-backend/Models/spam-100.csv", true, 3);
     model->evaluate(dataloader.getValData(), dataloader.getValLabels(), BCE);
-    model->saveModel("F:/Machine-Learning/Apollo-backend/Models/spam.csv");
-//    model->loadModel("F:/Machine-Learning/Apollo-backend/Models/spam.csv");
-//    model->evaluate(dataloader.getValData(), dataloader.getValLabels(), BCE);
 //    string email;
 //    cout << "Enter email: ";
 //    getline(cin, email);
@@ -45,5 +42,6 @@ int main() {
 ////    cout << emailMatrix.rows() << " " << emailMatrix.cols() << endl;
 ////    cout << emailMatrix << endl;
 //    cout << model->predict(emailMatrix);
+    system("pause");
     return 0;
 }
