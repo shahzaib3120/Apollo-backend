@@ -74,37 +74,39 @@ void testBCE() {
 }
 
 void testTrain(){
-    string path = "E:/Learning-E/Apollo/Dataset/emails-formatted.csv";
-//    string path = "E:/Learning-E/Apollo/Dataset/winequality-red.csv";
-//    string path = "E:/Learning-E/Apollo/Dataset/data.csv";
-//    string path = "F:/Machine-Learning/Apollo/Dataset/emails-formatted.csv";
-//    string path = "E:/Learning-E/Apollo/Dataset/sampleCircle.csv";
+    string path = "E:/Learning-E/Apollo-backend/Dataset/emails-formatted.csv";
+//    string path = "E:/Learning-E/Apollo-backend/Dataset/winequality-red.csv";
+//    string path = "E:/Learning-E/Apollo-backend/Dataset/data.csv";
+//    string path = "F:/Machine-Learning/Apollo-backend/Dataset/data.csv";
+    string path = "F:/Machine-Learning/Apollo-backend/Dataset/emails-formatted.csv";
+//    string path = "E:/Learning-E/Apollo-backend/Dataset/sampleCircle.csv";
+//    string path = "F:/Machine-Learning/Apollo-backend/Dataset/sampleCircle.csv";
     Dataloader dataloader(path, 0.8);
-    dataloader.head(5);
+//    dataloader.head(5);
     int* shape = dataloader.getTrainDataShape();
-    int* labelShape = dataloader.getTrainLabelsShape();
-    // print shape of trainData
-    cout << "Data shape: " << shape[0] << " " << shape[1] << endl;
-    // print shape of trainLabels
-    cout << "Labels shape: " << labelShape[0] << " " << labelShape[1] << endl;
-    // invert shape
     auto* model =  new Model(shape, true, 0.01, 1);
-    MultiType d1 = Dense(3, shape);
-    model->addLayer(&d1);
-    MultiType s1 = Sigmoid(model->getLastLayerOutputShape());
-    model->addLayer(&s1);
-    MultiType d2 = Dense(1, model->getLastLayerOutputShape());
-    model->addLayer(&d2);
-    MultiType s2 = Sigmoid(model->getLastLayerOutputShape());
-    model->addLayer(&s2);
+//    MultiType d1 = Dense(3, shape);
+//    model->addLayer(&d1);
+//    MultiType s1 = Sigmoid(model->getLastLayerOutputShape());
+//    model->addLayer(&s1);
+//    MultiType d2 = Dense(1, model->getLastLayerOutputShape());
+//    model->addLayer(&d2);
+//    MultiType s2 = Sigmoid(model->getLastLayerOutputShape());
+//    model->addLayer(&s2);
+//    model->compile();
+//    model->summary();
+//    model->fit(dataloader.getTrainData(), dataloader.getTrainLabels(), dataloader.getValData(), dataloader.getValLabels(), 100, BCE, true);
+//    model->evaluate(dataloader.getValData(), dataloader.getValLabels(), BCE);
+//    model->saveModel("F:/Machine-Learning/Apollo-backend/Models/spam.csv");
+    model->loadModel("F:/Machine-Learning/Apollo-backend/Models/spam.csv");
     model->compile();
-    model->fit(dataloader.getTrainData(), dataloader.getTrainLabels(), dataloader.getValData(), dataloader.getValLabels(), 100, BCE, true);
-//    model->fit(dataloader.getTrainData(), dataloader.getTrainLabels(), 1000, BCE, true);
+    model->summary();
+    model->evaluate(dataloader.getValData(), dataloader.getValLabels(), BCE);
 }
 
 void testHighFive(){
     string filename = "../Datasets/saved.h5";
-    H5Easy::File file("example.h5", H5Easy::File::Overwrite);
+//    H5Easy::File file("example.h5", H5Easy::File::Overwrite);
 //    Eigen::MatrixXd m = Eigen::MatrixXd::Random(3,2);
 //    H5Easy::dump(file, "/path/to/A", m, H5Easy::DumpMode::Overwrite);
     int A = 10;

@@ -7,6 +7,8 @@
 #include <iostream>
 #include <vector>
 using namespace std;
+using namespace DataLoader;
+
 Dataloader::Dataloader(Eigen::MatrixXd data, Eigen::MatrixXd labels, int batchSize) {
     this->numBatches = ((int)data.rows() / batchSize);
     // divide trainData into batches

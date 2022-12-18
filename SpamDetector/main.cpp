@@ -1,8 +1,7 @@
 #include <iostream>
-#include "Utils/Dataloader.h"
-#include "Layers/Dense.h"
-#include "Model/Model.h"
-#include "Preprocessing/Preprocessing.h"
+#include "../Utils/Dataloader.h"
+#include "../Layers/Dense.h"
+#include "../Model/Model.h"
 using namespace std;
 int main() {
 //    string path = "E:/Learning-E/Apollo-backend/Dataset/emails-formatted.csv";
@@ -25,25 +24,13 @@ int main() {
     MultiType s2 = Sigmoid(model->getLastLayerOutputShape());
     model->addLayer(&s2);
     model->compile();
-//    model->summary();
-    model->fit(dataloader.getTrainData(), dataloader.getTrainLabels(), dataloader.getValData(), dataloader.getValLabels(), 1000, BCE, true);
+    model->summary();
+    model->fit(dataloader.getTrainData(), dataloader.getTrainLabels(), dataloader.getValData(), dataloader.getValLabels(), 100, BCE, true);
     model->evaluate(dataloader.getValData(), dataloader.getValLabels(), BCE);
     model->saveModel("F:/Machine-Learning/Apollo-backend/Models/spam.csv");
 //    model->loadModel("F:/Machine-Learning/Apollo-backend/Models/spam.csv");
-//    model->evaluate(dataloader.getValData(), dataloader.getValLabels(), BCE);
-//    string email;
-//    cout << "Enter email: ";
-//    getline(cin, email);
-    // shape for spam detector = {1, 3000}
-//    int shape[2] = {1, 3000};
-//    auto* model =  new Model(shape, true, 0.01, 1);
-//    model->loadModel("F:/Machine-Learning/Apollo-backend/Models/spam.csv");
 //    model->compile();
-//    string emailPath = "F:/Machine-Learning/Apollo-backend/email.txt";
-//    Eigen::MatrixXd emailMatrix = Preprocessing::spamPreprocessingFile(emailPath);
-//    // print emailMatrix shape
-////    cout << emailMatrix.rows() << " " << emailMatrix.cols() << endl;
-////    cout << emailMatrix << endl;
-//    cout << model->predict(emailMatrix);
+//    model->summary();
+    model->evaluate(dataloader.getValData(), dataloader.getValLabels(), BCE);
     return 0;
 }
