@@ -279,18 +279,124 @@ double Model::validationLoss(Eigen::MatrixXd &outputs, Eigen::MatrixXd &targets,
     return 0.0;
 }
 
-
 // Model save
-void Model::saveModel(std::string path) {
-    // TBD
-}
-
-void Model::saveData(std::string filename, Eigen::MatrixXd matrix) {
-    const static Eigen::IOFormat CSVFormat(Eigen::FullPrecision, Eigen::DontAlignCols, ", ", "\n");
-    ofstream file(filename);
-    if (file.is_open())
-    {
-        file << matrix.format(CSVFormat);
+void Model::saveModel(const std::string & path) {
+    std::ofstream file(path);
+    if(file.is_open()){
+        int denseLayers = 0;
+        for(int i=0; i<this->layers.size(); i++){
+            if(this->layers[i].index() == 0){
+                denseLayers++;
+            }
+        }
+        file << denseLayers;
+        bool append = true;
+        for(auto layer : this->layers){
+            if(layer.index() == 0){
+                Dense dense = get<Dense>(layer);
+                dense.saveLayer(path, append);
+                append = true;
+            }
+            else if(layer.index() == 1) {
+                Sigmoid sigmoid = get<Sigmoid>(layer);
+                append = true;
+            }
+        }
         file.close();
     }
+    else{
+        cout<<"Error opening the file"<<endl;
+    }
+}
+
+void Model::loadModel(const std::string &path) {
+    this->layers.clear();
+    std::ifstream file(path);
+    if(file.is_open()){
+        // load the model
+        // load the layers
+        int numLayers;
+        file >> numLayers;
+        std::string line;
+        std::getline(file, line);
+        for(int i=0; i<numLayers; i++){
+            Eigen::VectorXd biases;
+            Eigen::MatrixXd weights;
+            vector<double> matrixEntries;
+            string matrixRowString;
+            string matrixEntry;
+            int matrixRowNumber = 0;
+            while(std::getline(file, matrixRowString)){
+                if(matrixRowString == "end"){
+                    break;
+                }
+                else{
+                    std::stringstream matrixRowStream(matrixRowString);
+                    while(std::getline(matrixRowStream, matrixEntry, ',')){
+                        matrixEntries.push_back(std::stod(matrixEntry));
+                    }
+                    matrixRowNumber++;
+                }
+            }
+            biases = Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>(matrixEntries.data(), matrixRowNumber, matrixEntries.size() / matrixRowNumber);
+            matrixEntries.clear();
+            matrixRowNumber = 0;
+            while(std::getline(file, matrixRowString)){
+                if(matrixRowString == "end"){
+                    break;
+                }
+                else{
+                    std::stringstream matrixRowStream(matrixRowString);
+                    while(std::getline(matrixRowStream, matrixEntry, ',')){
+                        matrixEntries.push_back(std::stod(matrixEntry));
+                    }
+                    matrixRowNumber++;
+                }
+            }
+            weights = Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>(matrixEntries.data(), matrixRowNumber, matrixEntries.size() / matrixRowNumber);
+            MultiType layer = Dense(weights, biases, this->inputShape[1]);
+            this->layers.push_back(layer);
+            // append sigmoid layer after each dense layer
+            int* sigmoidShape = new int[2];
+            sigmoidShape[0] = weights.rows();
+            sigmoidShape[1] = this->inputShape[1];
+            MultiType sigmoid = Sigmoid(sigmoidShape);
+            this->layers.push_back(sigmoid);
+        }
+        file.close();
+    }
+    else{
+        cout<<"Error opening the file"<<endl;
+    }
+}
+
+void Model::summary() {
+    cout<<"Model Summary"<<endl;
+    for(int i=0; i<this->layers.size(); i++){
+        if(this->layers[i].index() == 0){
+            Dense dense = get<Dense>(this->layers[i]);
+            dense.summary();
+        }
+        else if(this->layers[i].index() == 1){
+            Sigmoid sigmoid = get<Sigmoid>(this->layers[i]);
+            sigmoid.summary();
+        }
+    }
+    // print the output shape
+    int* outputShape = this->getLastLayerOutputShape();
+    cout << "==========================================" << endl;
+    cout<<"Input Shape: "<<this->inputShape[0]<<", "<<this->inputShape[1]<<endl;
+    cout<<"Output Shape: "<<outputShape[0]<<", "<<outputShape[1]<<endl;
+    // print trainable parameters
+    int trainableParams = 0;
+    for(int i=0; i<this->layers.size(); i++){
+        if(this->layers[i].index() == 0){
+            Dense dense = get<Dense>(this->layers[i]);
+            trainableParams += dense.getTrainableParams();
+        }
+    }
+    cout<< "Total Layers: " << this->layers.size() << endl;
+    cout<<"Trainable Parameters: "<<trainableParams<<endl;
+    cout << "==========================================" << endl;
+
 }

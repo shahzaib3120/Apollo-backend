@@ -67,4 +67,7 @@ int* Sigmoid::getOutputShape() {
     shape[1] = this->outputs.cols();
     return shape;
 }
+void Sigmoid::summary() {
+    cout << left << setw(15) << "Sigmoid Layer" << setw(20) << "| Input Shape: "<< setw(10) <<  to_string(this->inputs.rows()) + "x" + to_string(this->inputs.cols())  << setw(20) << "| Output Shape: " << setw(10) << to_string(this->outputs.rows()) + "x" + to_string(this->outputs.cols())  << endl;
+}
 

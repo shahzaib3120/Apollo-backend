@@ -54,10 +54,12 @@ public:
     vector<variant<Dense,Sigmoid>> getLayers();
     int* getLastLayerOutputShape();
     int* getLastLayerInputShape();
+
     // To be implemented
     void summary();
-    void saveModel(std::string path);
-    void loadModel(std::string path);
+    void saveModel(const std::string &path);
+    void loadModel(const std::string &path);
+
 };
 
 

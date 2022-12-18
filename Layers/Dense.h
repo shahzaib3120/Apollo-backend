@@ -10,9 +10,12 @@ class Dense:public Layer {
 public:
     Dense(int numNeurons, int numInputs, int numOutputs);
     Dense(int numNeurons, int* shape);
+    Dense(Eigen::MatrixXd weights, Eigen::VectorXd biases, int numOutputs);
     void forward(Eigen::MatrixXd inputs) override;
     void backward(Eigen::MatrixXd gradientsIn) override;
     void update(float learningRate) override;
+    void summary() override;
+    int getTrainableParams() override;
 };
 
 

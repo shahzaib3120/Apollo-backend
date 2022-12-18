@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "Dense.h"
+#include <iomanip>
 #include "../Utils/linalg.h"
 using namespace std;
 Dense::Dense(int numNeurons, int numInputs, int numOutputs):Layer(numNeurons, numInputs, numOutputs) {
@@ -16,24 +17,33 @@ Dense::Dense(int numNeurons, int *shape): Layer(numNeurons, shape) {
     this->numInputs = shape[0];
     this->numOutputs = shape[1];
 }
+Dense::Dense(Eigen::MatrixXd weights, Eigen::VectorXd biases, int numOutputs): Layer(weights, biases, numOutputs) {
+    this->weights = weights;
+    this->biases = biases;
+    this->numNeurons = weights.rows();
+    this->numInputs = weights.cols();
+    this->numOutputs = numOutputs;
+}
+
 void Dense::forward(Eigen::MatrixXd inputs) {
     this->inputs = inputs;
-//    this->outputs = this->weights * this->inputs + this->biases;
     this->outputs = this->weights * this->inputs;
     this->outputs = this->outputs.colwise() + this->biases;
-//    this->outputs = this->outputs + linalg::broadcast(this->biases, this->outputs.cols(), 1);
 }
 void Dense::backward(Eigen::MatrixXd gradientsIn) {
     this->weightsGradients = (gradientsIn * this->inputs.transpose())/gradientsIn.cols();
-//    cout << "grad in: " << endl << gradientsIn << endl;
     this->biasesGradients = gradientsIn.rowwise().sum()/gradientsIn.cols();
-//    cout << "biasesGradients: " << endl << this->biasesGradients << endl;
     this->gradients = this->weights.transpose() * gradientsIn;
 }
 void Dense::update(float learningRate) {
     this->weights = this->weights - learningRate * this->weightsGradients;
-//    cout << "biases shape: " << this->biases.rows() << " x " << this->biases.cols() << endl;
-//    cout << "biasesGradients shape: " << this->biasesGradients.rows() << " x " << this->biasesGradients.cols() << endl;
-//    this->biases = linalg::broadcast(this->biases, this->biasesGradients.cols(), 1) - learningRate * this->biasesGradients;
     this->biases = this->biases - learningRate * this->biasesGradients;
+}
+void Dense::summary() {
+    cout << left << setw(15) << "Dense Layer" << setw(20) << "| Neurons: " << setw(10) << this->numNeurons << setw(20) << "| Inputs: " << setw(10) << this->numInputs << setw(20) << "| Outputs: " << setw(10) <<this->numOutputs << endl;
+
+}
+
+int Dense::getTrainableParams() {
+    return this->numNeurons * (this->numInputs + 1);
 }

@@ -30,6 +30,20 @@ Layer::Layer(int numNeurons, int *shape) {
     this->weightsGradients = Eigen::MatrixXd::Random(numNeurons, shape[0]);
     this->biasesGradients = Eigen::VectorXd::Random(numNeurons);
 }
+
+Layer::Layer(Eigen::MatrixXd weights, Eigen::VectorXd biases, int numOutputs) {
+    this->weights = weights;
+    this->biases = biases;
+    this->numNeurons = weights.rows();
+    this->numInputs = weights.cols();
+    this->numOutputs = numOutputs;
+    this->inputs = Eigen::MatrixXd::Random(weights.cols(), numOutputs);
+    this->outputs = Eigen::MatrixXd::Random(weights.rows(), numOutputs);
+    this->gradients = Eigen::MatrixXd::Random(weights.rows(), numOutputs);
+    this->weightsGradients = Eigen::MatrixXd::Random(weights.rows(), weights.cols());
+    this->biasesGradients = Eigen::VectorXd::Random(weights.rows());
+}
+
 void Layer::setInputs(Eigen::MatrixXd inputs) {
     this->inputs = inputs;
 }
@@ -104,4 +118,49 @@ int* Layer::getInputShape() {
     inputShape[0] = this->numInputs;
     inputShape[1] = this->numOutputs;
     return inputShape;
+}
+
+void Layer::saveBiases(const std::string &path, bool append) {
+    const static Eigen::IOFormat CSVFormat(Eigen::FullPrecision, Eigen::DontAlignCols, ", ", "\n");
+    std::ofstream file;
+    if (append) {
+        file.open(path, std::ios_base::app);
+    } else {
+        file.open(path);
+    }
+    // add new line if appending
+    if (append) {
+        file << "\n";
+    }
+    // write shape
+//    file << this->numNeurons << "," << "1" << "\n";
+    // write biases
+    file << this->biases.format(CSVFormat);
+    file << "\nend";
+    file.close();
+}
+
+void Layer::saveWeights(const std::string &path, bool append) {
+    const static Eigen::IOFormat CSVFormat(Eigen::FullPrecision, Eigen::DontAlignCols, ", ", "\n");
+    std::ofstream file;
+    if (append) {
+        file.open(path, std::ios_base::app);
+    } else {
+        file.open(path);
+    }
+    // add new line if appending
+    if (append) {
+        file << "\n";
+    }
+    // write shapes
+//    file << this->numNeurons << "," << this->numInputs << "\n";
+    // write weights
+    file << this->weights.format(CSVFormat);
+    file << "\nend";
+    file.close();
+}
+
+void Layer::saveLayer(const std::string &path, bool append) {
+    this->saveBiases(path, append);
+    this->saveWeights(path, true);
 }

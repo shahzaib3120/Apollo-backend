@@ -1,22 +1,36 @@
 #include <iostream>
 #include "Utils/Dataloader.h"
+#include "Layers/Dense.h"
 #include "Model/Model.h"
-#include <fstream>
 using namespace std;
-using namespace Eigen;
-void saveData(std::string filename, Eigen::MatrixXd matrix) {
-    const static Eigen::IOFormat CSVFormat(Eigen::FullPrecision, Eigen::DontAlignCols, ", ", "\n");
-    ofstream file(filename);
-    if (file.is_open())
-    {
-//        file << matrix.format(CSVFormat);
-        file << "hello";
-        file.close();
-    }
-}
 int main() {
-    MatrixXd m = MatrixXd::Random(3, 3);
-    saveData("test.csv", m);
-    system("pause");
+//    string path = "E:/Learning-E/Apollo/Dataset/emails-formatted.csv";
+//    string path = "E:/Learning-E/Apollo/Dataset/winequality-red.csv";
+//    string path = "E:/Learning-E/Apollo/Dataset/data.csv";
+//    string path = "F:/Machine-Learning/Apollo/Dataset/data.csv";
+    string path = "F:/Machine-Learning/Apollo/Dataset/emails-formatted.csv";
+//    string path = "E:/Learning-E/Apollo/Dataset/sampleCircle.csv";
+//    string path = "F:/Machine-Learning/Apollo/Dataset/sampleCircle.csv";
+    Dataloader dataloader(path, 0.8);
+//    dataloader.head(5);
+    int* shape = dataloader.getTrainDataShape();
+    auto* model =  new Model(shape, true, 0.01, 1);
+//    MultiType d1 = Dense(3, shape);
+//    model->addLayer(&d1);
+//    MultiType s1 = Sigmoid(model->getLastLayerOutputShape());
+//    model->addLayer(&s1);
+//    MultiType d2 = Dense(1, model->getLastLayerOutputShape());
+//    model->addLayer(&d2);
+//    MultiType s2 = Sigmoid(model->getLastLayerOutputShape());
+//    model->addLayer(&s2);
+//    model->compile();
+//    model->summary();
+//    model->fit(dataloader.getTrainData(), dataloader.getTrainLabels(), dataloader.getValData(), dataloader.getValLabels(), 100, BCE, true);
+//    model->evaluate(dataloader.getValData(), dataloader.getValLabels(), BCE);
+//    model->saveModel("F:/Machine-Learning/Apollo/Models/spam.csv");
+    model->loadModel("F:/Machine-Learning/Apollo/Models/spam.csv");
+    model->compile();
+    model->summary();
+    model->evaluate(dataloader.getValData(), dataloader.getValLabels(), BCE);
     return 0;
 }

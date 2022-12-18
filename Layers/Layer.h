@@ -5,6 +5,9 @@
 #ifndef APOLLO_LAYER_H
 #define APOLLO_LAYER_H
 #include <Eigen/Dense>
+#include <fstream>
+#include <string>
+
 
 class Layer {
 protected:
@@ -24,6 +27,7 @@ protected:
 public:
     Layer(int numNeurons, int numInputs, int numOutputs);
     Layer(int numNeurons, int* shape);
+    Layer(Eigen::MatrixXd weights, Eigen::VectorXd biases, int numOutputs);
     // TODO: CHECK IF PARENT CLASS ARRAY CAN HAVE CHILD ELEMENTS
 //    Layer(Eigen::MatrixXd inputs);
     void setInputs(Eigen::MatrixXd inputs);
@@ -52,6 +56,17 @@ public:
     virtual void update(float learningRate) = 0;
     virtual void forward(Eigen::MatrixXd inputs) = 0;
     virtual void backward(Eigen::MatrixXd gradients) = 0;
+    virtual void summary() = 0;
+    virtual int getTrainableParams() = 0;
+
+    // TODO: add a method to save the weights and biases to a file
+    void saveWeights(std::string const &path, bool append=false);
+    void saveBiases(std::string const &path, bool append=false);
+    void saveGradients(std::string const &path, bool append=false);
+    void saveLayer(std::string const &path, bool append=false);
+
+
+
 };
 
 

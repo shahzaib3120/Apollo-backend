@@ -5,6 +5,10 @@
 #ifndef APOLLO_SIGMOID_H
 #define APOLLO_SIGMOID_H
 #include <Eigen/Dense>
+#include <iostream>
+#include <iomanip>
+#include <string>
+using namespace std;
 class Sigmoid{
 private:
     Eigen::MatrixXd inputs;
@@ -27,6 +31,7 @@ public:
     void backward(Eigen::MatrixXd &gradients);
     int* getInputShape();
     int* getOutputShape();
+    void summary();
 
 };
 #endif //APOLLO_SIGMOID_H
