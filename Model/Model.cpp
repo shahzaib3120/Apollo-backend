@@ -10,19 +10,19 @@
 #include <chrono>
 #include <fstream>
 
-Model::Model() {
+Apollo::Model::Model() {
     this->layers = {};
 }
-Model::Model(int *inputShape, bool verb, float learningRate, int numClasses) {
+Apollo::Model::Model(int *inputShape, bool verb, float learningRate, int numClasses) {
     this->inputShape = inputShape;
     this->verbose = verb;
     this->learningRate = learningRate;
     this->numClasses = numClasses;
 }
-void Model::addLayer(MultiType *layer) {
+void Apollo::Model::addLayer(MultiType *layer) {
     this->layers.push_back(*layer);
 }
-void Model::compile() {
+void Apollo::Model::compile() {
     if(this->verbose){
         cout<<"Compiling model..."<<endl;
     }
@@ -75,7 +75,7 @@ void Model::compile() {
         system("pause");
     }
 }
-void Model::forward(Eigen::MatrixXd inputs) {
+void Apollo::Model::forward(Eigen::MatrixXd inputs) {
     for(auto &layer: this->layers){
         if(layer.index() == 0){
             Dense dense = get<Dense>(layer);
@@ -93,7 +93,7 @@ void Model::forward(Eigen::MatrixXd inputs) {
         }
     }
 }
-void Model::backward(Eigen::MatrixXd gradientsIn) {
+void Apollo::Model::backward(Eigen::MatrixXd gradientsIn) {
     for(int i=this->layers.size()-1; i>=0; i--){
         if(this->layers[i].index() == 0){
             Dense dense = get<Dense>(this->layers[i]);
@@ -111,7 +111,7 @@ void Model::backward(Eigen::MatrixXd gradientsIn) {
         }
     }
 }
-void Model::update(float learningRate) {
+void Apollo::Model::update(float learningRate) {
     for(auto &layer: this->layers){
         if(layer.index() == 0){
             Dense dense = get<Dense>(layer);
@@ -130,7 +130,7 @@ void Model::update(float learningRate) {
 
 // TODO: compute validation accuracy and loss
 
-void Model::fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY, int epochs, enum lossFunction lossType, bool verb) {
+void Apollo::Model::fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY, int epochs, enum lossFunction lossType, bool verb) {
     this->verbose = verb;
     // set start time
     auto start = chrono::high_resolution_clock::now();
@@ -181,7 +181,7 @@ void Model::fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixX
     }
 }
 
-void Model::fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY, int epochs, enum lossFunction lossType, bool verb, bool saveEpoch, string savePath) {
+void Apollo::Model::fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY, int epochs, enum lossFunction lossType, bool verb, bool saveEpoch, string savePath) {
     this->verbose = verb;
     // set start time
     auto start = chrono::high_resolution_clock::now();
@@ -236,7 +236,7 @@ void Model::fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixX
     }
 }
 
-void Model::fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY, int epochs, enum lossFunction lossType, bool verb, bool saveEpoch, string savePath, bool earlyStopping, int threshold) {
+void Apollo::Model::fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY, int epochs, enum lossFunction lossType, bool verb, bool saveEpoch, string savePath, bool earlyStopping, int threshold) {
     this->verbose = verb;
     // set start time
     auto start = chrono::high_resolution_clock::now();
@@ -307,7 +307,7 @@ void Model::fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixX
     }
 }
 
- void Model::fit(Eigen::MatrixXd &inputs, Eigen::MatrixXd &labels, int epochs, enum lossFunction lossType , bool verb) {
+ void Apollo::Model::fit(Eigen::MatrixXd &inputs, Eigen::MatrixXd &labels, int epochs, enum lossFunction lossType , bool verb) {
     this->verbose = verb;
     if(this->verbose){
         cout<<"Training model..."<<endl;
@@ -329,7 +329,7 @@ void Model::fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixX
         cout<<"Model trained successfully"<<endl;
     }
 }
-void Model::lossFunction(Eigen::MatrixXd& outputs, Eigen::MatrixXd& targets, enum lossFunction lossType) {
+void Apollo::Model::lossFunction(Eigen::MatrixXd& outputs, Eigen::MatrixXd& targets, enum lossFunction lossType) {
     if(lossType == MSE){
         this->gradients = Loss::MSE(outputs, targets);
     }
@@ -341,17 +341,17 @@ void Model::lossFunction(Eigen::MatrixXd& outputs, Eigen::MatrixXd& targets, enu
         this->loss = lossVal;
     }
 }
-Eigen::MatrixXd Model::predict(Eigen::MatrixXd inputs) {
+Eigen::MatrixXd Apollo::Model::predict(Eigen::MatrixXd inputs) {
     this->forward(inputs);
     Eigen::MatrixXd outputs = this->layers[this->layers.size()-1].index() == 0 ? get<Dense>(this->layers[this->layers.size()-1]).getOutputs() : get<Sigmoid>(this->layers[this->layers.size()-1]).getOutputs();
     return outputs;
 }
-void Model::evaluate(Eigen::MatrixXd inputs, Eigen::MatrixXd labels, enum lossFunction lossType) {
+void Apollo::Model::evaluate(Eigen::MatrixXd inputs, Eigen::MatrixXd labels, enum lossFunction lossType) {
     Eigen::MatrixXd outputs = this->predict(inputs);
     this->lossFunction(outputs, labels, lossType);
     cout<<"Loss: "<<this->loss<<endl;
 }
-double Model::accuracy(Eigen::MatrixXd outputs, Eigen::MatrixXd labels) {
+double Apollo::Model::accuracy(Eigen::MatrixXd outputs, Eigen::MatrixXd labels) {
     double accuracy = 0.0;
     for(int i=0; i<outputs.cols(); i++){
         if(outputs(0, i) > 0.5 && labels(0, i) == 1){
@@ -363,7 +363,7 @@ double Model::accuracy(Eigen::MatrixXd outputs, Eigen::MatrixXd labels) {
     }
     return accuracy/double(outputs.cols());
 }
-int* Model::getLastLayerOutputShape() {
+int* Apollo::Model::getLastLayerOutputShape() {
     int* shape = new int[2];
     if(this->layers[this->layers.size()-1].index() == 0){
         Dense dense = get<Dense>(this->layers[this->layers.size()-1]);
@@ -375,7 +375,7 @@ int* Model::getLastLayerOutputShape() {
     }
     return shape;
 }
-int* Model::getLastLayerInputShape() {
+int* Apollo::Model::getLastLayerInputShape() {
     int* shape = new int[2];
     if(this->layers[this->layers.size()-1].index() == 0){
         Dense dense = get<Dense>(this->layers[this->layers.size()-1]);
@@ -387,14 +387,14 @@ int* Model::getLastLayerInputShape() {
     }
     return shape;
 }
-bool Model::compareShapes(int const *shape1, int const *shape2) {
+bool Apollo::Model::compareShapes(int const *shape1, int const *shape2) {
     if(shape1[0] == shape2[0] && shape1[1] == shape2[1]){
         return true;
     }
     return false;
 }
 
-double Model::validationLoss(Eigen::MatrixXd &outputs, Eigen::MatrixXd &targets, enum lossFunction lossType) {
+double Apollo::Model::validationLoss(Eigen::MatrixXd &outputs, Eigen::MatrixXd &targets, enum lossFunction lossType) {
     if(lossType == MSE){
         this->gradients = Loss::MSE(outputs, targets);
         return 0.0;
@@ -407,7 +407,7 @@ double Model::validationLoss(Eigen::MatrixXd &outputs, Eigen::MatrixXd &targets,
 }
 
 // Model save
-void Model::saveModel(const std::string & path) {
+void Apollo::Model::saveModel(const std::string & path) {
     std::ofstream file(path);
     if(file.is_open()){
         int denseLayers = 0;
@@ -436,7 +436,7 @@ void Model::saveModel(const std::string & path) {
     }
 }
 
-void Model::loadModel(const std::string &path) {
+void Apollo::Model::loadModel(const std::string &path) {
     this->layers.clear();
     std::ifstream file(path);
     if(file.is_open()){
@@ -497,7 +497,7 @@ void Model::loadModel(const std::string &path) {
     }
 }
 
-void Model::summary() {
+void Apollo::Model::summary() {
     cout<<"Model Summary"<<endl;
     for(int i=0; i<this->layers.size(); i++){
         if(this->layers[i].index() == 0){

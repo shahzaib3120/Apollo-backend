@@ -4,10 +4,10 @@
 #include <Eigen/Dense>
 #include "Loss.h"
 #include <iostream>
-Eigen::MatrixXd Loss::MSE(Eigen::MatrixXd &outputs, Eigen::MatrixXd &targets){
+Eigen::MatrixXd Apollo::Loss::MSE(Eigen::MatrixXd &outputs, Eigen::MatrixXd &targets){
     return (outputs - targets).array().square();
 }
-std::tuple<Eigen::MatrixXd, float> Loss::BCE(Eigen::MatrixXd &outputs, Eigen::MatrixXd &targets) {
+std::tuple<Eigen::MatrixXd, float> Apollo::Loss::BCE(Eigen::MatrixXd &outputs, Eigen::MatrixXd &targets) {
     // check if shapes are equal
     // print shapes
     if (outputs.rows() != targets.rows() || outputs.cols() != targets.cols()) {

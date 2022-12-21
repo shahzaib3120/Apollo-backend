@@ -6,7 +6,7 @@
 #define APOLLO_DATALOADER_H
 
 #include <Eigen/Dense>
-namespace DataLoader{
+namespace Apollo{
     class Dataloader {
     private:
         Eigen::MatrixXd trainData;

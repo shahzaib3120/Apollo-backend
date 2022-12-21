@@ -5,7 +5,7 @@
 #include <hash_map>
 #include <fstream>
 using namespace std;
-Eigen::MatrixXd Preprocessing::spamPreprocessingFile(const std::string &path) {
+Eigen::MatrixXd Apollo::Preprocessing::spamPreprocessingFile(const std::string &path) {
     // Args:
     // path: path to txt file containing email
     // Returns:
@@ -64,7 +64,7 @@ Eigen::MatrixXd Preprocessing::spamPreprocessingFile(const std::string &path) {
     return matrix;
 }
 
-Eigen::MatrixXd Preprocessing::spamPreprocessing(const std::string &email) {
+Eigen::MatrixXd Apollo::Preprocessing::spamPreprocessing(const std::string &email) {
     // Args:
     // email: string containing email
     // Returns:

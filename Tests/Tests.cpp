@@ -9,7 +9,7 @@
 #include "../Utils/Dataloader.h"
 #include "../Model/Model.h"
 #include "../Loss/Loss.h"
-#include <highfive/H5Easy.hpp>
+using namespace Apollo;
 //#include <highfive/H5File.hpp>
 //using namespace HighFive;
 using namespace std;

@@ -7,9 +7,8 @@
 #include <iostream>
 #include <vector>
 using namespace std;
-using namespace DataLoader;
 
-Dataloader::Dataloader(Eigen::MatrixXd data, Eigen::MatrixXd labels, int batchSize) {
+Apollo::Dataloader::Dataloader(Eigen::MatrixXd data, Eigen::MatrixXd labels, int batchSize) {
     this->numBatches = ((int)data.rows() / batchSize);
     // divide trainData into batches
     this->trainData = Eigen::MatrixXd::Random(this->numBatches, batchSize);
@@ -24,7 +23,7 @@ Dataloader::Dataloader(Eigen::MatrixXd data, Eigen::MatrixXd labels, int batchSi
     this->currentBatch = 0;
 }
 // for binary classification
-Dataloader::Dataloader(Eigen::MatrixXd data, Eigen::MatrixXd labels) {
+Apollo::Dataloader::Dataloader(Eigen::MatrixXd data, Eigen::MatrixXd labels) {
     this->numBatches = (int)data.rows();
     // flatten trainData to shape rows*cols, 1
     this->trainData  = data.reshaped(data.rows() * data.cols(), 1);
@@ -32,7 +31,7 @@ Dataloader::Dataloader(Eigen::MatrixXd data, Eigen::MatrixXd labels) {
 }
 // TODO: for multiclass classification
 
-Dataloader::Dataloader(std::string const &path) {
+Apollo::Dataloader::Dataloader(std::string const &path) {
     // Args:
     //     path: path to the csv file
     // Format:
@@ -90,7 +89,7 @@ Dataloader::Dataloader(std::string const &path) {
     this->currentBatch = 0;
 }
 
-Dataloader::Dataloader(std::string const &path, float trainSplit) {
+Apollo::Dataloader::Dataloader(std::string const &path, float trainSplit) {
     // Args:
     //     path: path to the csv file
     //     trainSplit: percentage of trainData to be used for training
@@ -164,7 +163,7 @@ Dataloader::Dataloader(std::string const &path, float trainSplit) {
 
 }
 
-void Dataloader::head(int n) {
+void Apollo::Dataloader::head(int n) {
 
     // Args:
     //     n: number of rows to print
@@ -182,44 +181,44 @@ void Dataloader::head(int n) {
         cout << this->trainLabels.row(0)[i] << endl;
     }
 }
- int* Dataloader::getTrainDataShape() {
+ int* Apollo::Dataloader::getTrainDataShape() {
     auto* shape = new int[2];
     shape[0] = (int)this->trainData.rows();
     shape[1] = (int)this->trainData.cols();
     return shape;
 }
- int* Dataloader::getTrainLabelsShape() {
+ int* Apollo::Dataloader::getTrainLabelsShape() {
     auto* shape = new int[2];
     shape[0] = (int)this->trainLabels.rows();
     shape[1] = (int)this->trainLabels.cols();
     return shape;
 }
- int* Dataloader::getValDataShape() {
+ int* Apollo::Dataloader::getValDataShape() {
     auto* shape = new int[2];
     shape[0] = (int)this->valData.rows();
     shape[1] = (int)this->valData.cols();
     return shape;
 }
- int* Dataloader::getValLabelsShape() {
+ int* Apollo::Dataloader::getValLabelsShape() {
     auto* shape = new int[2];
     shape[0] = (int)this->valLabels.rows();
     shape[1] = (int)this->valLabels.cols();
     return shape;
 }
-Eigen::MatrixXd &Dataloader::getTrainData() {
+Eigen::MatrixXd &Apollo::Dataloader::getTrainData() {
     return this->trainData;
 }
-Eigen::MatrixXd &Dataloader::getTrainLabels() {
+Eigen::MatrixXd &Apollo::Dataloader::getTrainLabels() {
     return this->trainLabels;
 }
-Eigen::MatrixXd &Dataloader::getValData() {
+Eigen::MatrixXd &Apollo::Dataloader::getValData() {
     return this->valData;
 }
-Eigen::MatrixXd &Dataloader::getValLabels() {
+Eigen::MatrixXd &Apollo::Dataloader::getValLabels() {
     return this->valLabels;
 }
 
-int Dataloader::min(long a, int b) {
+int Apollo::Dataloader::min(long a, int b) {
     if (a < b) {
             return a;
         }

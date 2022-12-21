@@ -4,6 +4,7 @@
 #include "Model/Model.h"
 #include "Preprocessing/Preprocessing.h"
 using namespace std;
+using namespace Apollo;
 int main() {
 //    string path = "E:/Learning-E/Apollo-backend/Dataset/emails-formatted.csv";
 //    string path = "E:/Learning-E/Apollo-backend/Dataset/winequality-red.csv";
@@ -12,7 +13,7 @@ int main() {
     string path = "F:/Machine-Learning/Apollo-backend/Dataset/emails-formatted.csv";
 //    string path = "E:/Learning-E/Apollo-backend/Dataset/sampleCircle.csv";
 //    string path = "F:/Machine-Learning/Apollo-backend/Dataset/sampleCircle.csv";
-    DataLoader::Dataloader dataloader(path, 0.8);
+    Dataloader dataloader(path, 0.8);
 //    dataloader.head(5);
     int* shape = dataloader.getTrainDataShape();
     auto* model =  new Model(shape, true, 0.01, 1);

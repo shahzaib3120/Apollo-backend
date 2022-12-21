@@ -3,7 +3,7 @@
 //
 #include "linalg.h"
 
-Eigen::MatrixXd linalg::broadcast(Eigen::MatrixXd matrix, int size, int axis) {
+Eigen::MatrixXd Apollo::linalg::broadcast(Eigen::MatrixXd matrix, int size, int axis) {
     Eigen::MatrixXd result;
     if (axis == 0){
         result = Eigen::MatrixXd::Zero(size, matrix.cols());
@@ -19,7 +19,7 @@ Eigen::MatrixXd linalg::broadcast(Eigen::MatrixXd matrix, int size, int axis) {
     }
     return result;
 }
-Eigen::MatrixXd linalg::broadcast(Eigen::MatrixXd matrix, Eigen::MatrixXd shape, int axis) {
+Eigen::MatrixXd Apollo::linalg::broadcast(Eigen::MatrixXd matrix, Eigen::MatrixXd shape, int axis) {
     Eigen::MatrixXd result;
     if (axis == 0){
         result = Eigen::MatrixXd::Zero(shape(0), matrix.cols());
