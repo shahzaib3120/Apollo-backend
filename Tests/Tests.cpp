@@ -74,11 +74,11 @@ void testBCE() {
 }
 
 void testTrain(){
-    string path = "E:/Learning-E/Apollo-backend/Dataset/emails-formatted.csv";
-//    string path = "E:/Learning-E/Apollo-backend/Dataset/winequality-red.csv";
+//    string path = "E:/Learning-E/Apollo-backend/Dataset/emails-formatted.csv";
+    string path = "E:/Learning-E/Apollo-backend/Dataset/winequality-red.csv";
 //    string path = "E:/Learning-E/Apollo-backend/Dataset/data.csv";
 //    string path = "F:/Machine-Learning/Apollo-backend/Dataset/data.csv";
-    string path = "F:/Machine-Learning/Apollo-backend/Dataset/emails-formatted.csv";
+//    string path = "F:/Machine-Learning/Apollo-backend/Dataset/emails-formatted.csv";
 //    string path = "E:/Learning-E/Apollo-backend/Dataset/sampleCircle.csv";
 //    string path = "F:/Machine-Learning/Apollo-backend/Dataset/sampleCircle.csv";
     Dataloader dataloader(path, 0.8);

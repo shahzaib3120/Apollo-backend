@@ -237,6 +237,21 @@ void Apollo::Model::fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen:
 }
 
 void Apollo::Model::fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY, int epochs, enum lossFunction lossType, bool verb, bool saveEpoch, string savePath, bool earlyStopping, int threshold) {
+    // Args: trainX, trainY, valX, valY, epochs, lossType, verbose, saveEpoch, savePath, earlyStopping, threshold
+    // trainX: training data - Eigen::MatrixXd
+    // trainY: training labels - Eigen::MatrixXd
+    // valX: validation data - Eigen::MatrixXd
+    // valY: validation labels - Eigen::MatrixXd
+    // epochs: number of epochs - int
+    // lossType: loss function - enum lossFunction
+    // verb: verbose - bool
+    // saveEpoch: save model after each epoch - bool
+    // savePath: path to save the model - string
+    // earlyStopping: early stopping - bool
+    // threshold: threshold for early stopping - int
+    // Returns: None
+
+
     this->verbose = verb;
     // set start time
     auto start = chrono::high_resolution_clock::now();
@@ -437,6 +452,10 @@ void Apollo::Model::saveModel(const std::string & path) {
 }
 
 void Apollo::Model::loadModel(const std::string &path) {
+    // Args: path to the model file (string)
+    // Returns: None
+    // description : loads the model from the file
+
     this->layers.clear();
     std::ifstream file(path);
     if(file.is_open()){

@@ -20,7 +20,8 @@ Eigen::MatrixXd Apollo::Preprocessing::spamPreprocessingFile(const std::string &
     // predefined wordsMap are 3000 wordsMap stored in a csv file
     // single row containing all the wordsMap separated by commas
 //    string wordsPath = "files/words.csv";
-    string wordsPath = "F:/Machine-Learning/Apollo-backend/Preprocessing/files/words.csv";
+//    string wordsPath = "F:/Machine-Learning/Apollo-backend/Preprocessing/files/words.csv";
+    string wordsPath = "E:/Learning-E/Apollo-backend/Preprocessing/files/words.csv";
 //    string wordsPath = "F:/Machine-Learning/Apollo-backend/Preprocessing/files/demoWords.csv";
     // create a dictionary of wordsMap and set their frequency to 0
 
@@ -79,8 +80,8 @@ Eigen::MatrixXd Apollo::Preprocessing::spamPreprocessing(const std::string &emai
     // predefined wordsMap are 3000 wordsMap stored in a csv file
     // single row containing all the wordsMap separated by commas
 
-
-    string wordsPath = "files/wordsMap.csv";
+    string wordsPath = "E:/Learning-E/Apollo-backend/Preprocessing/files/words.csv";
+//    string wordsPath = "files/wordsMap.csv";
     // create a dictionary of wordsMap and set their frequency to 0
     unordered_map<string, int> wordsMap;
     vector<string> insertionOrder;
