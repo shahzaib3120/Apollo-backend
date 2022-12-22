@@ -1,8 +1,8 @@
 TODO:
 Training:
-    Load hdf5 file
     Change pass by value to pass by reference for speed
-    Compute validation accuracy
 General:
+    Change preprocessing function to use dynamic words path
+    Create a gui for creating/training model
     Add proper exception handling for trainData file missing
     Add comments for arguments
