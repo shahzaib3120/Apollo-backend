@@ -380,27 +380,39 @@ double Apollo::Model::accuracy(Eigen::MatrixXd outputs, Eigen::MatrixXd labels) 
 }
 int* Apollo::Model::getLastLayerOutputShape() {
     int* shape = new int[2];
-    if(this->layers[this->layers.size()-1].index() == 0){
-        Dense dense = get<Dense>(this->layers[this->layers.size()-1]);
-        shape= dense.getOutputShape();
+    if(layers.size()>0){
+        if(this->layers[this->layers.size()-1].index() == 0){
+            Dense dense = get<Dense>(this->layers[this->layers.size()-1]);
+            shape= dense.getOutputShape();
+        }
+        else if(this->layers[this->layers.size()-1].index() == 1){
+            Sigmoid sigmoid = get<Sigmoid>(this->layers[this->layers.size()-1]);
+            shape= sigmoid.getOutputShape();
+        }
+        return shape;
+    }else{
+        shape[0] = 0;
+        shape[1] = 0;
+        return shape;
     }
-    else if(this->layers[this->layers.size()-1].index() == 1){
-        Sigmoid sigmoid = get<Sigmoid>(this->layers[this->layers.size()-1]);
-        shape= sigmoid.getOutputShape();
-    }
-    return shape;
 }
 int* Apollo::Model::getLastLayerInputShape() {
     int* shape = new int[2];
-    if(this->layers[this->layers.size()-1].index() == 0){
-        Dense dense = get<Dense>(this->layers[this->layers.size()-1]);
-        shape = dense.getInputShape();
+    if(layers.size()>0){
+        if(this->layers[this->layers.size()-1].index() == 0){
+            Dense dense = get<Dense>(this->layers[this->layers.size()-1]);
+            shape = dense.getInputShape();
+        }
+        else if(this->layers[this->layers.size()-1].index() == 1){
+            Sigmoid sigmoid = get<Sigmoid>(this->layers[this->layers.size()-1]);
+            shape= sigmoid.getInputShape();
+        }
+        return shape;
+    }else{
+        shape[0] = 0;
+        shape[1] = 0;
+        return shape;
     }
-    else if(this->layers[this->layers.size()-1].index() == 1){
-        Sigmoid sigmoid = get<Sigmoid>(this->layers[this->layers.size()-1]);
-        shape= sigmoid.getInputShape();
-    }
-    return shape;
 }
 bool Apollo::Model::compareShapes(int const *shape1, int const *shape2) {
     if(shape1[0] == shape2[0] && shape1[1] == shape2[1]){

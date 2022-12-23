@@ -8,8 +8,10 @@
 #include <fstream>
 #include <string>
 
-namespace Apollo {
-    class Layer {
+namespace Apollo
+{
+    class Layer
+    {
     protected:
         int numNeurons;
         int numInputs;
@@ -31,7 +33,7 @@ namespace Apollo {
         Layer(Eigen::MatrixXd weights, Eigen::VectorXd biases, int numOutputs);
 
         // TODO: CHECK IF PARENT CLASS ARRAY CAN HAVE CHILD ELEMENTS
-//    Layer(Eigen::MatrixXd inputs);
+        //    Layer(Eigen::MatrixXd inputs);
         void setInputs(Eigen::MatrixXd inputs);
 
         Eigen::MatrixXd getOutputs();
@@ -96,9 +98,7 @@ namespace Apollo {
         void saveGradients(std::string const &path, bool append = false);
 
         void saveLayer(std::string const &path, bool append = false);
-
-
     };
 
 }
-#endif //APOLLO_LAYER_H
+#endif // APOLLO_LAYER_H
