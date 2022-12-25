@@ -12,13 +12,17 @@ This is the base class for all layers. It is an abstract class, and cannot be in
         Layer(Eigen::MatrixXd weights, Eigen::VectorXd biases, int numOutputs)
 
 <code>Layer(int numNeurons, int numInputs, int numOutputs);</code><br>
-<code>numNeurons</code>: the number of neurons in the layer.<br><br>
+Args:<br>
+&emsp;<code>numNeurons</code>: the number of neurons in the layer.<br><br>
 <code>Layer(int numNeurons, int *shape);</code><br>
-<code>numNeurons</code>: the number of neurons in the layer.<br><br>
+Args:<br>
+&emsp;<code>numNeurons</code>: the number of neurons in the layer.<br><br>
 <code>Layer(Eigen::MatrixXd weights, Eigen::VectorXd biases, int numOutputs);</code><br>
-<code>weights</code>: the weights of the layer.<br>
-<code>biases</code>: the biases of the layer.<br>
-<code>numOutputs</code>: the number of outputs of the layer.<br><br>
+Args:<br>
+&emsp;<code>weights</code>: the weights of the layer.<br>
+&emsp;<code>biases</code>: the biases of the layer.<br>
+&emsp;<code>numOutputs</code>: the number of outputs of the layer.<br><br>
+
 #### Attributes
 <code>int numNeurons;</code><br>
 <code>int numInputs;</code><br>
@@ -52,42 +56,49 @@ This is the base class for all layers. It is an abstract class, and cannot be in
         void saveLayer(std::string const &path, bool append = false);
 
 <code>void update(float learningRate) = 0;</code><br>
-<code>learningRate</code>: learning rate for the layer.<br>
+Args:<br>
+&emsp;<code>learningRate</code>: the learning rate of the layer.<br>
 This method updates the weights and biases of the layer using the gradients calculated in the backward method.<br><br>
 
 <code>void forward(Eigen::MatrixXd inputs) = 0;</code><br>
-<code>inputs</code>: input matrix to the layer.<br>
+Args:<br>
+&emsp;<code>inputs</code>: the inputs of the layer.<br>
 This method calculates the output of the layer given the input.<br><br>
 
 <code>void backward(Eigen::MatrixXd gradients) = 0;</code><br>
-<code>gradients</code>: gradients from the next layer.<br>
+Args:<br>
+&emsp;<code>gradients</code>: the gradients of the layer.<br>
 This method calculates the gradients of the layer given the gradients from the next layer.<br><br>
 
 <code>void summary() = 0;</code><br>
-This method prints a summary of the layer.<br>
+This method prints a summary of the layer.<br><br>
+
 <code>int getTrainableParams() = 0;</code><br>
 This method returns the number of trainable parameters in the layer.<br><br>
 
 <code>void saveWeights(std::string const &path, bool append = false);</code><br>
-<code>path</code>: path to the file where the weights will be saved.<br>
-<code>append</code>: if true, the weights will be appended to the file, otherwise the file will be overwritten.<br>
+Args:<br>
+&emsp;<code>path</code>: the path to the file where the weights will be saved.<br>
+&emsp;<code>append</code>: whether to append the weights to the file or not.<br>
 This method saves the weights of the layer to a file.<br><br>
 
 <code>void saveBiases(std::string const &path, bool append = false);</code><br>
-<code>path</code>: path to the file where the biases will be saved.<br>
-<code>append</code>: if true, the biases will be appended to the file, otherwise the file will be overwritten.<br>
+Args:<br>
+&emsp;<code>path</code>: the path to the file where the biases will be saved.<br>
+&emsp;<code>append</code>: if true, the biases will be appended to the file, otherwise the file will be overwritten.<br>
 This method saves the biases of the layer to a file.<br><br>
 
 <code>void saveGradients(std::string const &path, bool append = false);</code><br>
-<code>path</code>: path to the file where the gradients will be saved.<br>
-<code>append</code>: if true, the gradients will be appended to the file, otherwise the file will be overwritten.<br>
+Args:<br>
+&emsp;<code>path</code>: the path to the file where the gradients will be saved.<br>
+&emsp;<code>append</code>: if true, the gradients will be appended to the file, otherwise the file will be overwritten.<br>
 This method saves the gradients of the layer to a file.<br><br>
 
 <code>void saveLayer(std::string const &path, bool append = false);</code><br>
-<code>path</code>: path to the file where the layer will be saved.<br>
-<code>append</code>: if true, the layer will be appended to the file, otherwise the file will be overwritten.<br>
+Args:<br>
+&emsp;<code>path</code>: the path to the file where the layer will be saved.<br>
+&emsp;<code>append</code>: if true, the layer will be appended to the file, otherwise the file will be overwritten.<br>
 This method saves the layer to a file.<br><br>
-
 
 ### Dense
 This is a fully connected layer. It is derived from the Layer class. It provides the forward and backward methods for a fully connected layer.
