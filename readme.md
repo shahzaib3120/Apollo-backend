@@ -21,11 +21,11 @@ Train the model<br>
 This is the base class for all layers. It is an abstract class, and cannot be instantiated directly. It provides the basic functionality for all layers such as numNeurons, numInputs, dW, and dB. It also provides the abstract methods forward and backward as pure virtual functions. These methods must be implemented by all derived classes.
 #### Constructors
 ```cpp
-    Layer(int numNeurons, int numInputs, int numOutputs)
+    Layer(int numNeurons, int numInputs, int numOutputs);
     
-    Layer(int numNeurons, int *shape)
+    Layer(int numNeurons, int *shape);
     
-    Layer(Eigen::MatrixXd weights, Eigen::VectorXd biases, int numOutputs)
+    Layer(Eigen::MatrixXd weights, Eigen::VectorXd biases, int numOutputs);
 ```
 
 <code>Layer(int numNeurons, int numInputs, int numOutputs);</code><br>
