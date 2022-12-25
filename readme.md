@@ -1,6 +1,18 @@
 # Documentation
 ## Introduction
-This is a simple example of a readme file. It is written in markdown, and can be used to provide documentation for your project. It is a good idea to include a readme file in your project, as it will help others to understand what your project is about, and how to use it.
+This project aims at building a machine learning framework using C-plus-plus with minimal dependencies and a modular code structure. The framework is named Apollo and it provides necessary classes and operations for Neural Networks. The modular nature of code allows user to define custom layers type with custom activations and loss functions. We have demonstrated the framework application by building a binary classifier that detects a spam email.<br>
+## Dependencies
+* C++17
+* [Eigen3](http://eigen.tuxfamily.org/)
+* [Qt](https://www.qt.io/)
+* [CMake](https://cmake.org/)
+
+## GUI
+This repository contains the standalone code for Neural Network operations. The GUI is available in a separate repository [here](https://github.com/shahzaib3120/Apollo).<br>
+The GUI is built using Qt and it provides a user friendly interface to train and test the model. The GUI is shown below.<br>
+![train](https://github.com/shahzaib3120/Apollo-backend/blob/main/images/train.jpg)<br>
+![addDense](https://github.com/shahzaib3120/Apollo-backend/blob/main/images/addDense.jpg)<br>
+![model](https://github.com/shahzaib3120/Apollo-backend/blob/main/images/addDense.jpg)<br>
 ## Layers
 ### Layer
 This is the base class for all layers. It is an abstract class, and cannot be instantiated directly. It provides the basic functionality for all layers such as numNeurons, numInputs, dW, and dB. It also provides the abstract methods forward and backward as pure virtual functions. These methods must be implemented by all derived classes.
@@ -544,11 +556,3 @@ Args:<br>
 &emsp;<code>shape</code>: the shape of the matrix to be broadcasted to.<br>
 &emsp;<code>axis</code>: the axis along which the matrix is to be broadcasted.<br>
 This function broadcasts the input matrix to the given shape along the given axis.<br><br>
-
-
-
-
-
-
-
-
