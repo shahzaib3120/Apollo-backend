@@ -10,9 +10,12 @@ This project aims at building a machine learning framework using C-plus-plus wit
 ## GUI
 This repository contains the standalone code for Neural Network operations. The GUI is available in a separate repository [here](https://github.com/shahzaib3120/Apollo).<br>
 The GUI is built using Qt and it provides a user friendly interface to train and test the model. The GUI is shown below.<br>
-![train](https://github.com/shahzaib3120/Apollo-backend/blob/main/images/train.jpg)<br>
+Create a new model<br>
+![model](https://github.com/shahzaib3120/Apollo-backend/blob/main/images/model.jpg)<br>
+Add layers to the model<br>
 ![addDense](https://github.com/shahzaib3120/Apollo-backend/blob/main/images/addDense.jpg)<br>
-![model](https://github.com/shahzaib3120/Apollo-backend/blob/main/images/addDense.jpg)<br>
+Train the model<br>
+![train](https://github.com/shahzaib3120/Apollo-backend/blob/main/images/train.jpg)<br>
 ## Layers
 ### Layer
 This is the base class for all layers. It is an abstract class, and cannot be instantiated directly. It provides the basic functionality for all layers such as numNeurons, numInputs, dW, and dB. It also provides the abstract methods forward and backward as pure virtual functions. These methods must be implemented by all derived classes.
