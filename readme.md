@@ -111,13 +111,21 @@ This is a fully connected layer. It is derived from the Layer class. It provides
         Dense(Eigen::MatrixXd weights, Eigen::VectorXd biases, int numOutputs);
 
 <code>Dense(int numNeurons, int numInputs, int numOutputs);</code><br>
-<code>numNeurons</code>: the number of neurons in the layer.<br><br>
+Args:<br>
+&emsp;<code>numNeurons</code>: the number of neurons in the layer.<br>
+&emsp;<code>numInputs</code>: the number of inputs of the layer.<br>
+&emsp;<code>numOutputs</code>: the number of outputs of the layer.<br>
+
 <code>Dense(int numNeurons, int *shape);</code><br>
-<code>numNeurons</code>: the number of neurons in the layer.<br><br>
+Args:<br>
+&emsp;<code>numNeurons</code>: the number of neurons in the layer.<br>
+&emsp;<code>shape</code>: the shape of the layer.<br>
+
 <code>Dense(Eigen::MatrixXd weights, Eigen::VectorXd biases, int numOutputs);</code><br>
-<code>weights</code>: the weights of the layer.<br>
-<code>biases</code>: the biases of the layer.<br>
-<code>numOutputs</code>: the number of outputs of the layer.<br><br>
+Args:<br>
+&emsp;<code>weights</code>: the weights of the layer.<br>
+&emsp;<code>biases</code>: the biases of the layer.<br>
+&emsp;<code>numOutputs</code>: the number of outputs of the layer.<br><br>
 
 #### Methods
 
@@ -133,15 +141,18 @@ This is a fully connected layer. It is derived from the Layer class. It provides
 
 
 <code>void update(float learningRate);</code><br>
-<code>learningRate</code>: learning rate for the layer.<br>
+Args:<br>
+&emsp;<code>learningRate</code>: the learning rate of the layer.<br>
 This method updates the weights and biases of the layer using the gradients calculated in the backward method.<br><br>
 
 <code>void forward(Eigen::MatrixXd inputs);</code><br>
-<code>inputs</code>: input matrix to the layer.<br>
+Args:<br>
+&emsp;<code>inputs</code>: the inputs of the layer.<br>
 This method calculates the output of the layer given the input.<br><br>
 
 <code>void backward(Eigen::MatrixXd gradients);</code><br>
-<code>gradients</code>: gradients from the next layer.<br>
+Args:<br>
+&emsp;<code>gradients</code>: the gradients of the layer.<br>
 This method calculates the gradients of the layer given the gradients from the next layer.<br><br>
 
 <code>void summary();</code><br>
@@ -164,14 +175,18 @@ This is a sigmoid activation layer. It is derived from the Activation class. It 
         Sigmoid(int *shape);
 
 <code> Sigmoid(Eigen::MatrixXd &inputs);</code><br>
-<code>inputs</code>: input matrix to the layer.<br><br>
+Args:<br>
+&emsp;<code>inputs</code>: the inputs of the layer.<br><br>
 
 <code> Sigmoid(int numInputs, int numOutputs);</code><br>
-<code>numInputs</code>: number of inputs to the layer.<br>
-<code>numOutputs</code>: number of outputs from the layer.<br><br>
+Args:<br>
+&emsp;<code>numInputs</code>: the number of inputs of the layer.<br>
+&emsp;<code>numOutputs</code>: the number of outputs of the layer.<br><br>
+
 
 <code> Sigmoid(int *shape);</code><br>
-<code>shape</code>: shape of the input matrix to the layer.<br>
+Args:<br>
+&emsp;<code>shape</code>: the shape of the layer.<br><br>
 
 #### Attributes
 <code>Eigen::MatrixXd inputs;</code><br>
@@ -190,20 +205,23 @@ This is a sigmoid activation layer. It is derived from the Activation class. It 
         void summary();
 
 <code>void forward(Eigen::MatrixXd &inputs);</code><br>
-<code>inputs</code>: input matrix to the layer.<br>
+Args:<br>
+&emsp;<code>inputs</code>: the inputs of the layer.<br>
 This method calculates the output of the layer given the input.<br><br>
 
 <code>void backward(Eigen::MatrixXd &gradients);</code><br>
-<code>gradients</code>: gradients from the next layer.<br>
+Args:<br>
+&emsp;<code>gradients</code>: the gradients of the layer.<br>
 This method calculates the gradients of the layer given the gradients from the next layer.<br><br>
 
 <code>int *getInputShape();</code><br>
 This method returns the shape of the input matrix to the layer.<br><br>
+
 <code>int *getOutputShape();</code><br>
 This method returns the shape of the output matrix from the layer.<br><br>
 
 <code>void summary();</code><br>
-This method prints a summary of the layer.<br><br>
+This method prints a summary of the layer.<br>
 
 ## Loss
 Loss is a namespace that contains the loss functions and their derivatives.
@@ -255,20 +273,24 @@ Dataloader is a class that is used to load data from a file. It is used to load 
         // NOTE: Make sure the file contains trainLabels in the first column
 
 <code>Dataloader(Eigen::MatrixXd data, Eigen::MatrixXd labels, int batchSize);</code><br>
-<code>data</code>: data matrix.<br>
-<code>labels</code>: labels matrix.<br>
-<code>batchSize</code>: batch size.<br><br>
+Args:<br>
+&emsp;<code>data</code>: the data matrix.<br>
+&emsp;<code>labels</code>: the labels matrix.<br>
+&emsp;<code>batchSize</code>: the batch size.<br><br>
 
 <code>Dataloader(Eigen::MatrixXd data, Eigen::MatrixXd labels);</code><br>
-<code>data</code>: data matrix.<br>
-<code>labels</code>: labels matrix.<br><br>
+Args:<br>
+&emsp;<code>data</code>: the data matrix.<br>
+&emsp;<code>labels</code>: the labels matrix.<br><br>
 
 <code>Dataloader(std::string const &path);</code><br>
-<code>path</code>: path to the csv file.<br><br>
+Args:<br>
+&emsp;<code>path</code>: the path to the csv file.<br><br>
 
 <code>Dataloader(std::string const &path, float trainSplit);</code><br>
-<code>path</code>: path to the csv file.<br>
-<code>trainSplit</code>: percentage of data to be used for training.<br>
+Args:<br>
+&emsp;<code>path</code>: the path to the csv file.<br>
+&emsp;<code>trainSplit</code>: the split ratio for the train and test data.<br>
 
 ### Attributes
 
@@ -300,7 +322,8 @@ Dataloader is a class that is used to load data from a file. It is used to load 
         int* getValLabelsShape();
 
 <code>void head(int n);</code><br>
-<code>n</code>: number of rows to be printed.<br>
+Args:<br>
+&emsp;<code>n</code>: the number of rows to print.<br>
 This method prints the first n rows of first n columns of the training data and labels.<br><br>
 
 ## Model
@@ -314,10 +337,11 @@ Model is a class that is used to create a neural network. It is derived from the
 
 
 <code>Model(int *inputShape, bool verb, float learningRate = 0.001, int numClasses = 1);</code><br>
-<code>inputShape</code>: shape of the input matrix.<br>
-<code>verb</code>: verbosity of the model, to show the progress.<br>
-<code>learningRate</code>: learning rate of the model.<br>
-<code>numClasses</code>: number of classes in the dataset.<br>
+Args:<br>
+&emsp;<code>inputShape</code>: the shape of the input matrix.<br>
+&emsp;<code>verb</code>: the verbosity of the model.<br>
+&emsp;<code>learningRate</code>: the learning rate of the model.<br>
+&emsp;<code>numClasses</code>: the number of classes in the dataset.<br><br>
 
 ### Attributes
 Some attributes are:<br>
@@ -365,69 +389,78 @@ Some attributes are:<br>
 <code>std::variant</code> is a type-safe union introduced in c++ 17. It is used to store different types of layers in a single vector.<br><br>
 
 <code>void addLayer(MultiType *layer);</code><br>
-<code>layer</code>: pointer to the layer to be added.<br>
+Args:<br>
+&emsp;<code>layer</code>:pointer to the layer to be added.<br>
 This method adds a layer to the model.<br><br>
 
 <code>void compile();</code><br>
 This method assert the input and output shapes of consecutive layers and throws an error if they are not compatible.<br><br>
 
 <code>void fit(Eigen::MatrixXd &inputs, Eigen::MatrixXd &labels, int epochs, enum lossFunction, bool verb);</code><br>
-<code>inputs</code>: input matrix.<br>
-<code>labels</code>: labels matrix.<br>
-<code>epochs</code>: number of epochs.<br>
-<code>lossFunction</code>: loss function to be used.<br>
+Args:<br>
+&emsp;<code>inputs</code>: the input matrix.<br>
+&emsp;<code>labels</code>: the labels matrix.<br>
+&emsp;<code>epochs</code>: the number of epochs.<br>
+&emsp;<code>lossFunction</code>: the loss function to be used.<br>
+&emsp;<code>verb</code>: the verbosity of the model.<br>
+This method trains the model.<br><br>
 
     enum lossFunction{
         BCE,
         MSE
     };
-<code>verb</code>: verbosity of the model, to show the progress.<br>
-This method trains the model.<br><br>
 
 <code>void fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY, int epochs, enum lossFunction, bool verb);</code><br>
-<code>trainX</code>: training input matrix.<br>
-<code>trainY</code>: training labels matrix.<br>
-<code>valX</code>: validation input matrix.<br>
-<code>valY</code>: validation labels matrix.<br>
-<code>epochs</code>: number of epochs.<br>
-<code>lossFunction</code>: loss function to be used.<br>
-<code>verb</code>: verbosity of the model, to show the progress.<br>
+Args:<br>
+&emsp;<code>trainX</code>: the training input matrix.<br>
+&emsp;<code>trainY</code>: the training labels matrix.<br>
+&emsp;<code>valX</code>: the validation input matrix.<br>
+&emsp;<code>valY</code>: the validation labels matrix.<br>
+&emsp;<code>epochs</code>: the number of epochs.<br>
+&emsp;<code>lossFunction</code>: the loss function to be used.<br>
+&emsp;<code>verb</code>: the verbosity of the model.<br>
 This method trains the model.<br><br>
 
 <code>void fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY, int epochs, enum lossFunction, bool verb, bool saveEpoch, string filename);</code><br>
-<code>trainX</code>: training input matrix.<br>
-<code>trainY</code>: training labels matrix.<br>
-<code>valX</code>: validation input matrix.<br>
-<code>valY</code>: validation labels matrix.<br>
-<code>epochs</code>: number of epochs.<br>
-<code>lossFunction</code>: loss function to be used.<br>
-<code>verb</code>: verbosity of the model, to show the progress.<br>
-<code>saveEpoch</code>: boolean to save the model after every epoch.<br>
-<code>filename</code>: filename to save the model.<br>
+Args:<br>
+&emsp;<code>trainX</code>: the training input matrix.<br>
+&emsp;<code>trainY</code>: the training labels matrix.<br>
+&emsp;<code>valX</code>: the validation input matrix.<br>
+&emsp;<code>valY</code>: the validation labels matrix.<br>
+&emsp;<code>epochs</code>: the number of epochs.<br>
+&emsp;<code>lossFunction</code>: the loss function to be used.<br>
+&emsp;<code>verb</code>: the verbosity of the model.<br>
+&emsp;<code>saveEpoch</code>: whether to save the model after every epoch.<br>
+&emsp;<code>filename</code>: the name of the file to save the model.<br>
 This method trains the model.<br><br>
 
 <code>void fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY, int epochs, enum lossFunction, bool verb, bool saveEpoch, string filename, bool earlyStopping, int threshold);</code><br>
-<code>trainX</code>: training input matrix.<br>
-<code>trainY</code>: training labels matrix.<br>
-<code>valX</code>: validation input matrix.<br>
-<code>valY</code>: validation labels matrix.<br>
-<code>epochs</code>: number of epochs.<br>
-<code>lossFunction</code>: loss function to be used.<br>
-<code>verb</code>: verbosity of the model, to show the progress.<br>
-<code>saveEpoch</code>: boolean to save the model after every epoch.<br>
-<code>filename</code>: filename to save the model.<br>
-<code>earlyStopping</code>: boolean to stop training if the validation loss does not decrease for a certain number of epochs.<br>
-<code>threshold</code>: number of epochs to wait before stopping the training.<br>
+Args:<br>
+&emsp;<code>trainX</code>: the training input matrix.<br>
+&emsp;<code>trainY</code>: the training labels matrix.<br>
+&emsp;<code>valX</code>: the validation input matrix.<br>
+&emsp;<code>valY</code>: the validation labels matrix.<br>
+&emsp;<code>epochs</code>: the number of epochs.<br>
+&emsp;<code>lossFunction</code>: the loss function to be used.<br>
+&emsp;<code>verb</code>: the verbosity of the model.<br>
+&emsp;<code>saveEpoch</code>: whether to save the model after every epoch.<br>
+&emsp;<code>filename</code>: the name of the file to save the model.<br>
+&emsp;<code>earlyStopping</code>: whether to use early stopping.<br>
+&emsp;<code>threshold</code>: the threshold for early stopping.<br>
 This method trains the model.<br><br>
 
 <code>Eigen::MatrixXd predict(Eigen::MatrixXd inputs);</code><br>
-<code>inputs</code>: input matrix.<br>
-This method returns the output of the model.<br><br>
+Args:<br>
+&emsp;<code>inputs</code>: the input matrix.<br>
+Returns:<br>
+&emsp;<code>outputs</code>: the output matrix.<br>
+This method predicts the output for the given input.<br><br>
 
 <code>void evaluate(Eigen::MatrixXd inputs, Eigen::MatrixXd labels, enum lossFunction lossType);</code><br>
-<code>inputs</code>: input matrix.<br>
-<code>labels</code>: labels matrix.<br>
-<code>lossType</code>: loss function to be used.<br>
+Args:<br>
+&emsp;<code>inputs</code>: the input matrix.<br>
+&emsp;<code>labels</code>: the labels matrix.<br>
+&emsp;<code>lossType</code>: the loss function to be used.<br>
 This method evaluates the model.<br><br>
 
 <code>int *getLastLayerOutputShape();</code><br>
@@ -440,11 +473,13 @@ This method returns the input shape of the last layer.<br><br>
 This method prints the summary of the model including details of each layer including its neurons, input/output shape and total number of trainable params.<br><br>
 
 <code>void saveModel(const std::string &path);</code><br>
-<code>path</code>: path to save the model.<br>
-This method saves the model to the specified path.<br><br>
+Args:<br>
+&emsp;<code>path</code>: the path to save the model.<br>
+This method saves the model to the given path.<br><br>
 
 <code>void loadModel(const std::string &path);</code><br>
-<code>path</code>: path to load the model from.<br>
+Args:<br>
+&emsp;<code>path</code>: the path to load the model from.<br>
 This method loads the model from the specified path.<br><br>
 
 ## Preprocessing
@@ -462,20 +497,24 @@ Preprocessing is a namespace that contains functions to preprocess the data befo
 
 ### Functions
 <code>Eigen::MatrixXd normalize(Eigen::MatrixXd matrix);</code><br>
-<code>matrix</code>: input matrix.<br>
+Args:<br>
+&emsp;<code>matrix</code>: the matrix to be normalized.<br>
 This function normalizes the input matrix by dividing each element by the maximum value in the matrix.<br><br>
 
 <code>Eigen::MatrixXd standardize(Eigen::MatrixXd matrix);</code><br>
-<code>matrix</code>: input matrix.<br>
+Args:<br>
+&emsp;<code>matrix</code>: the matrix to be standardized.<br>
 This function standardizes the input matrix by subtracting the mean and dividing by the standard deviation.<br><br>
 
 <code>Eigen::MatrixXd spamPreprocessingFile(const std::string &path);</code><br>
-<code>path</code>: path to the file.<br>
+Args:<br>
+&emsp;<code>path</code>: the path to the file to be preprocessed.<br>
 This function preprocesses the data from the file and returns the input matrix containing the frequency of 3000 predefined words in the email in a specific order.<br>
 <b><i>This function is exclusively for the spam email classification problem.</i></b><br><br>
 
 <code>Eigen::MatrixXd spamPreprocessing(const std::string &email);</code><br>
-<code>email</code>: email string.<br>
+Args:<br>
+&emsp;<code>email</code>: the email to be preprocessed.<br>
 This function preprocesses the data from the email string and returns the input matrix containing the frequency of 3000 predefined words in the email in a specific order.<br>
 <b><i>This function is exclusively for the spam email classification problem.</i></b><br><br>
 
@@ -493,16 +532,18 @@ linalg is a namespace which provides some linear algebra functions used in the t
 
 ### Functions
 <code>Eigen::MatrixXd broadcast(Eigen::MatrixXd matrix, int size, int axis);</code><br>
-<code>matrix</code>: input matrix.<br>
-<code>size</code>: size of the output matrix.<br>
-<code>axis</code>: axis along which the matrix is broadcasted.<br>
-This function broadcasts the input matrix along the specified axis.<br><br>
+Args:<br>
+&emsp;<code>matrix</code>: the matrix to be broadcasted.<br>
+&emsp;<code>size</code>: the size of the matrix to be broadcasted to.<br>
+&emsp;<code>axis</code>: the axis along which the matrix is to be broadcasted.<br>
+This function broadcasts the input matrix to the given size along the given axis.<br><br>
 
 <code>Eigen::MatrixXd broadcast(Eigen::MatrixXd matrix, Eigen::MatrixXd shape, int axis);</code><br>
-<code>matrix</code>: input matrix.<br>
-<code>shape</code>: shape of the output matrix.<br>
-<code>axis</code>: axis along which the matrix is broadcasted.<br>
-This function broadcasts the input matrix along the specified axis.<br><br>
+Args:<br>
+&emsp;<code>matrix</code>: the matrix to be broadcasted.<br>
+&emsp;<code>shape</code>: the shape of the matrix to be broadcasted to.<br>
+&emsp;<code>axis</code>: the axis along which the matrix is to be broadcasted.<br>
+This function broadcasts the input matrix to the given shape along the given axis.<br><br>
 
 
 
