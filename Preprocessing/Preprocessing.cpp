@@ -120,3 +120,51 @@ Eigen::MatrixXd Apollo::Preprocessing::spamPreprocessing(const std::string &emai
     }
     return matrix;
 }
+
+Eigen::MatrixXd Apollo::Preprocessing::normalize(Eigen::MatrixXd matrix) {
+    // Args:
+    // matrix: matrix to be normalized
+    // Returns:
+    // Eigen::MatrixXd: normalized matrix
+    // Description:
+    // This function normalizes the matrix by dividing each element by the maximum element in the matrix
+    // Example:
+    // normalize([[1,2,3],[4,5,6]])
+    // Output:
+    // [[0.16666666666666666, 0.3333333333333333, 0.5],
+    // [0.6666666666666666, 0.8333333333333334, 1.0]]
+    double max = matrix.maxCoeff();
+    return matrix / max;
+}
+
+Eigen::MatrixXd Apollo::Preprocessing::standardize(Eigen::MatrixXd matrix) {
+    // Args:
+    // matrix: matrix to be standardized
+    // Returns:
+    // Eigen::MatrixXd: standardized matrix
+    // Description:
+    // This function standardizes the matrix by subtracting the mean and dividing by the standard deviation
+    // Example:
+    // standardize([[1,2,3],[4,5,6]])
+    // Output:
+    // [[-1.224744871391589, -0.4082482904638631, 0.4082482904638631],
+    // [1.224744871391589, 0.4082482904638631, -0.4082482904638631]]
+    // calculate the mean of the matrix
+    double mean = matrix.mean();
+    // compute the standard deviation
+    double std = 0;
+    for (int i = 0; i < matrix.rows(); i++) {
+        for (int j = 0; j < matrix.cols(); j++) {
+            std += pow(matrix(i, j) - mean, 2);
+        }
+    }
+    std = sqrt(std / (matrix.rows() * matrix.cols()));
+    // subtract the mean and divide by the standard deviation
+    Eigen::MatrixXd standardizedMatrix = matrix;
+    for (int i = 0; i < matrix.rows(); i++) {
+        for (int j = 0; j < matrix.cols(); j++) {
+            standardizedMatrix(i, j) = (matrix(i, j) - mean) / std;
+        }
+    }
+    return standardizedMatrix;
+}

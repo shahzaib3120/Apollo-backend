@@ -23,7 +23,9 @@
   <component name="ChangeListManager">
     <list default="true" id="ad69bf06-c31e-4b65-a11e-6bac5e6f6431" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Layers/Layer.h" beforeDir="false" afterPath="$PROJECT_DIR$/Layers/Layer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Preprocessing/Preprocessing.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Preprocessing/Preprocessing.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils/Dataloader.h" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/Dataloader.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,6 +70,11 @@
   }
 }</component>
   <component name="RunManager" selected="CMake Application.Apollo">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Apollo-test" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Apollo" TARGET_NAME="Apollo-test" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Apollo" RUN_TARGET_NAME="Apollo-test">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -94,11 +101,23 @@
       <workItem from="1671741637253" duration="4916000" />
       <workItem from="1671752481046" duration="65000" />
       <workItem from="1671819650625" duration="1000" />
+      <workItem from="1671989867772" duration="7924000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

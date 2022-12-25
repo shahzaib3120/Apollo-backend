@@ -25,15 +25,12 @@ namespace Apollo{
         Dataloader(std::string const &path);
         // dataloader for csv files with train and validation split
         Dataloader(std::string const &path, float trainSplit);
-        Eigen::MatrixXd nextBatch();
-        Eigen::MatrixXd nextBatch(int batchNumber);
-        Eigen::MatrixXd getBatch(int batchNumber);
-        Eigen::MatrixXd getBatch();
+
         Eigen::MatrixXd &getTrainLabels();
         Eigen::MatrixXd &getTrainData();
         Eigen::MatrixXd &getValData();
         Eigen::MatrixXd &getValLabels();
-        Eigen::MatrixXd getLabels(int batchNumber);
+        
         void head(int n);
         int* getTrainDataShape();
         int* getTrainLabelsShape();
