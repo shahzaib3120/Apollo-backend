@@ -20,11 +20,13 @@ Train the model<br>
 ### Layer
 This is the base class for all layers. It is an abstract class, and cannot be instantiated directly. It provides the basic functionality for all layers such as numNeurons, numInputs, dW, and dB. It also provides the abstract methods forward and backward as pure virtual functions. These methods must be implemented by all derived classes.
 #### Constructors
-        Layer(int numNeurons, int numInputs, int numOutputs)
-
-        Layer(int numNeurons, int *shape)
-
-        Layer(Eigen::MatrixXd weights, Eigen::VectorXd biases, int numOutputs)
+```cpp
+    Layer(int numNeurons, int numInputs, int numOutputs)
+    
+    Layer(int numNeurons, int *shape)
+    
+    Layer(Eigen::MatrixXd weights, Eigen::VectorXd biases, int numOutputs)
+```
 
 <code>Layer(int numNeurons, int numInputs, int numOutputs);</code><br>
 Args:<br>
@@ -51,24 +53,25 @@ Args:<br>
 <code>Eigen::MatrixXd weightsGradients;</code><br>
 <code>Eigen::VectorXd biasesGradients;</code><br>
 #### Methods
+```c++
+    virtual void update(float learningRate) = 0;
 
-        virtual void update(float learningRate) = 0;
+    virtual void forward(Eigen::MatrixXd inputs) = 0;
 
-        virtual void forward(Eigen::MatrixXd inputs) = 0;
+    virtual void backward(Eigen::MatrixXd gradients) = 0;
 
-        virtual void backward(Eigen::MatrixXd gradients) = 0;
+    virtual void summary() = 0;
 
-        virtual void summary() = 0;
+    virtual int getTrainableParams() = 0;
 
-        virtual int getTrainableParams() = 0;
+    void saveWeights(std::string const &path, bool append = false);
 
-        void saveWeights(std::string const &path, bool append = false);
+    void saveBiases(std::string const &path, bool append = false);
 
-        void saveBiases(std::string const &path, bool append = false);
+    void saveGradients(std::string const &path, bool append = false);
 
-        void saveGradients(std::string const &path, bool append = false);
-
-        void saveLayer(std::string const &path, bool append = false);
+    void saveLayer(std::string const &path, bool append = false);
+```
 
 <code>void update(float learningRate) = 0;</code><br>
 Args:<br>
@@ -118,13 +121,13 @@ This method saves the layer to a file.<br><br>
 ### Dense
 This is a fully connected layer. It is derived from the Layer class. It provides the forward and backward methods for a fully connected layer.
 #### Constructors
+```c++
+    Dense(int numNeurons, int numInputs, int numOutputs);
 
-        Dense(int numNeurons, int numInputs, int numOutputs);
+    Dense(int numNeurons, int *shape);
 
-        Dense(int numNeurons, int* shape);
-
-        Dense(Eigen::MatrixXd weights, Eigen::VectorXd biases, int numOutputs);
-
+    Dense(Eigen::MatrixXd weights, Eigen::VectorXd biases, int numOutputs);
+```
 <code>Dense(int numNeurons, int numInputs, int numOutputs);</code><br>
 Args:<br>
 &emsp;<code>numNeurons</code>: the number of neurons in the layer.<br>
@@ -143,18 +146,17 @@ Args:<br>
 &emsp;<code>numOutputs</code>: the number of outputs of the layer.<br><br>
 
 #### Methods
+```c++
+    void update(float learningRate) override;
 
-        void forward(Eigen::MatrixXd inputs) override;
+    void forward(Eigen::MatrixXd inputs) override;
 
-        void backward(Eigen::MatrixXd gradientsIn) override;
+    void backward(Eigen::MatrixXd gradients) override;
 
-        void update(float learningRate) override;
+    void summary() override;
 
-        void summary() override;
-
-        int getTrainableParams() override;
-
-
+    int getTrainableParams() override;
+```
 <code>void update(float learningRate);</code><br>
 Args:<br>
 &emsp;<code>learningRate</code>: the learning rate of the layer.<br>
@@ -182,12 +184,13 @@ This is an activation layer. It is derived from the Layer class. It provides the
 ### Sigmoid
 This is a sigmoid activation layer. It is derived from the Activation class. It provides the forward and backward methods for a sigmoid activation layer.
 #### Constructors
+```c++
+    Sigmoid(Eigen::MatrixXd &inputs);
 
-        Sigmoid(Eigen::MatrixXd &inputs);
-
-        Sigmoid(int numInputs, int numOutputs);
-
-        Sigmoid(int *shape);
+    Sigmoid(int numInputs, int numOutputs);
+    
+    Sigmoid(int *shape);
+```
 
 <code> Sigmoid(Eigen::MatrixXd &inputs);</code><br>
 Args:<br>
@@ -208,16 +211,17 @@ Args:<br>
 <code>Eigen::MatrixXd outputs;</code><br>
 <code>Eigen::MatrixXd gradientsOut;</code><br>
 #### Methods
+```c++
+    void forward(Eigen::MatrixXd &inputs);
 
-        void forward(Eigen::MatrixXd &inputs);
+    void backward(Eigen::MatrixXd &gradients);
 
-        void backward(Eigen::MatrixXd &gradients);
+    int *getInputShape();
 
-        int *getInputShape();
+    int *getOutputShape();
 
-        int *getOutputShape();
-
-        void summary();
+    void summary();
+```
 
 <code>void forward(Eigen::MatrixXd &inputs);</code><br>
 Args:<br>
@@ -240,22 +244,24 @@ This method prints a summary of the layer.<br>
 
 ## Loss
 Loss is a namespace that contains the loss functions and their derivatives.
-
-        enum lossFunction{
-            BCE,
-            MSE
-        };
+```c++
+    enum lossFunction{
+        BCE,
+        MSE
+    };
+```
 ### Binary Cross Entropy
 This is the binary cross entropy loss function. It is used for binary classification problems.
 #### Functions
+```c++
+    namespace Loss {
+        ...        
+        std::tuple<Eigen::MatrixXd, float> BCE(Eigen::MatrixXd &outputs, Eigen::MatrixXd &targets);
 
-        namespace Loss {
-            ...        
-            std::tuple<Eigen::MatrixXd, float> BCE(Eigen::MatrixXd &outputs, Eigen::MatrixXd &targets);
-
-            float BCEValue(Eigen::MatrixXd &loss);
-            ...
-        }
+        float BCEValue(Eigen::MatrixXd &loss);
+        ...
+    }
+```
 
 <code>std::tuple<Eigen::MatrixXd, float> BCE(Eigen::MatrixXd &outputs, Eigen::MatrixXd &targets);</code><br>
 #### Arguments
@@ -276,16 +282,17 @@ This function calculates the binary cross entropy loss value.<br>
 Dataloader is a class that is used to load data from a file. It is used to load data from a csv file. It is derived from the DataLoader class. It provides the methods to load data from a csv file.
 
 ### Constructors
+```c++
+    Dataloader(Eigen::MatrixXd data, Eigen::MatrixXd labels, int batchSize);
 
-        Dataloader(Eigen::MatrixXd data, Eigen::MatrixXd labels, int batchSize);
+    Dataloader(Eigen::MatrixXd data, Eigen::MatrixXd labels);
 
-        Dataloader(Eigen::MatrixXd data, Eigen::MatrixXd labels);
+    Dataloader(std::string const &path);
 
-        Dataloader(std::string const &path);
+    Dataloader(std::string const &path, float trainSplit);
 
-        Dataloader(std::string const &path, float trainSplit);
-
-        // NOTE: Make sure the file contains trainLabels in the first column
+    // NOTE: Make sure the file contains trainLabels in the first column
+```
 
 <code>Dataloader(Eigen::MatrixXd data, Eigen::MatrixXd labels, int batchSize);</code><br>
 Args:<br>
@@ -317,24 +324,25 @@ Args:<br>
 <code>int numBatches;</code><br>
 
 ### Methods
+```c++
+    Eigen::MatrixXd &getTrainLabels();
 
-        Eigen::MatrixXd &getTrainLabels();
+    Eigen::MatrixXd &getTrainData();
 
-        Eigen::MatrixXd &getTrainData();
+    Eigen::MatrixXd &getValData();
 
-        Eigen::MatrixXd &getValData();
+    Eigen::MatrixXd &getValLabels();
+    
+    void head(int n);
 
-        Eigen::MatrixXd &getValLabels();
-        
-        void head(int n);
+    int* getTrainDataShape();
 
-        int* getTrainDataShape();
+    int* getTrainLabelsShape();
 
-        int* getTrainLabelsShape();
+    int * getValDataShape();
 
-        int * getValDataShape();
-
-        int* getValLabelsShape();
+    int* getValLabelsShape();
+```
 
 <code>void head(int n);</code><br>
 Args:<br>
@@ -345,10 +353,11 @@ This method prints the first n rows of first n columns of the training data and 
 Model is a class that is used to create a neural network. It is derived from the Model class. It provides the methods to create a neural network.
 
 ### Constructors
+```c++
+    Model();
 
-        Model();
-
-        Model(int *inputShape, bool verb, float learningRate = 0.001, int numClasses = 1);
+    Model(int *inputShape, bool verb, float learningRate = 0.001, int numClasses = 1);
+```
 
 
 <code>Model(int *inputShape, bool verb, float learningRate = 0.001, int numClasses = 1);</code><br>
@@ -360,44 +369,46 @@ Args:<br>
 
 ### Attributes
 Some attributes are:<br>
-
+```c++
     vector<variant<Dense, Sigmoid>> layers;
 
     float loss;
+```
 
 ### Methods
+```c++
+    void addLayer(MultiType *layer);
 
-        void addLayer(MultiType *layer);
+    void compile();
 
-        void compile();
+    void fit(Eigen::MatrixXd &inputs, Eigen::MatrixXd &labels, int epochs, enum lossFunction, bool verb);
 
-        void fit(Eigen::MatrixXd &inputs, Eigen::MatrixXd &labels, int epochs, enum lossFunction, bool verb);
+    void
+    fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY, int epochs,
+        enum lossFunction, bool verb);
 
-        void
-        fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY, int epochs,
-            enum lossFunction, bool verb);
+    void
+    fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY, int epochs,
+        enum lossFunction, bool verb, bool saveEpoch, string filename);
 
-        void
-        fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY, int epochs,
-            enum lossFunction, bool verb, bool saveEpoch, string filename);
+    void
+    fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY, int epochs,
+        enum lossFunction, bool verb, bool saveEpoch, string filename, bool earlyStopping, int threshold);
 
-        void
-        fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY, int epochs,
-            enum lossFunction, bool verb, bool saveEpoch, string filename, bool earlyStopping, int threshold);
+    Eigen::MatrixXd predict(Eigen::MatrixXd inputs);
 
-        Eigen::MatrixXd predict(Eigen::MatrixXd inputs);
+    void evaluate(Eigen::MatrixXd inputs, Eigen::MatrixXd labels, enum lossFunction lossType);
 
-        void evaluate(Eigen::MatrixXd inputs, Eigen::MatrixXd labels, enum lossFunction lossType);
+    int *getLastLayerOutputShape();
 
-        int *getLastLayerOutputShape();
+    int *getLastLayerInputShape();
 
-        int *getLastLayerInputShape();
+    void summary();
 
-        void summary();
+    void saveModel(const std::string &path);
 
-        void saveModel(const std::string &path);
-
-        void loadModel(const std::string &path);
+    void loadModel(const std::string &path);
+```
 
 
 <code>MultiType = variant<Dense,Sigmoid>;</code><br>
@@ -419,11 +430,12 @@ Args:<br>
 &emsp;<code>lossFunction</code>: the loss function to be used.<br>
 &emsp;<code>verb</code>: the verbosity of the model.<br>
 This method trains the model.<br><br>
-
+```c++
     enum lossFunction{
         BCE,
         MSE
     };
+```
 
 <code>void fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY, int epochs, enum lossFunction, bool verb);</code><br>
 Args:<br>
@@ -499,16 +511,17 @@ This method loads the model from the specified path.<br><br>
 
 ## Preprocessing
 Preprocessing is a namespace that contains functions to preprocess the data before training or evaluating the model.<br><br>
+```c++
+    namespace Preprocessing {
+        Eigen::MatrixXd normalize(Eigen::MatrixXd matrix);
 
-        namespace Preprocessing {
-            Eigen::MatrixXd normalize(Eigen::MatrixXd matrix);
-    
-            Eigen::MatrixXd standardize(Eigen::MatrixXd matrix);
-    
-            Eigen::MatrixXd spamPreprocessingFile(const std::string &path);
-    
-            Eigen::MatrixXd spamPreprocessing(const std::string &email);
-        }
+        Eigen::MatrixXd standardize(Eigen::MatrixXd matrix);
+
+        Eigen::MatrixXd spamPreprocessingFile(const std::string &path);
+
+        Eigen::MatrixXd spamPreprocessing(const std::string &email);
+    }
+```
 
 ### Functions
 <code>Eigen::MatrixXd normalize(Eigen::MatrixXd matrix);</code><br>
@@ -538,12 +551,13 @@ Header of the dataset must be copied to <code>Preprocessing/files</code> directo
 
 ## linalg
 linalg is a namespace which provides some linear algebra functions used in the training process.<br><br>
+```c++
+    namespace linalg {
+        Eigen::MatrixXd broadcast(Eigen::MatrixXd matrix, int size, int axis);
 
-        namespace linalg {
-            Eigen::MatrixXd broadcast(Eigen::MatrixXd matrix, int size, int axis);
-    
-            Eigen::MatrixXd broadcast(Eigen::MatrixXd matrix, Eigen::MatrixXd shape, int axis);
-        }
+        Eigen::MatrixXd broadcast(Eigen::MatrixXd matrix, Eigen::MatrixXd shape, int axis);
+    }
+```
 
 ### Functions
 <code>Eigen::MatrixXd broadcast(Eigen::MatrixXd matrix, int size, int axis);</code><br>
