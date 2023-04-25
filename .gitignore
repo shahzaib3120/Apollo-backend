@@ -1,7 +1,9 @@
 /cmake-build-debug
 /.vs
 /.vscode
+/.idea
 /out
+*.xml
 *.exe
 *.out
 *.app
