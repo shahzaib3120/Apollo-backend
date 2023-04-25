@@ -23,7 +23,7 @@ Apollo::Sigmoid::Sigmoid(int* shape) {
     this->outputs = Eigen::MatrixXd::Random(shape[0], shape[1]);
     this->gradientsOut = Eigen::MatrixXd::Random(shape[0], shape[1]);
 }
-void Apollo::Sigmoid::setInputs(Eigen::MatrixXd inputs) {
+void Apollo::Sigmoid::setInputs(Eigen::MatrixXd &inputs) {
     this->inputs = inputs;
 }
 Eigen::MatrixXd Apollo::Sigmoid::getOutputs() {
@@ -40,9 +40,6 @@ void Apollo::Sigmoid::setOutputs(Eigen::MatrixXd &outputs) {
 }
 void Apollo::Sigmoid::forward() {
     this->outputs = 1 / (1 + (-this->inputs).array().exp());
-}
-void Apollo::Sigmoid::backward() {
-    this->gradientsOut = this->outputs.array() * (1 - this->outputs.array());
 }
 void Apollo::Sigmoid::forward(Eigen::MatrixXd &inputs) {
     this->inputs = inputs;

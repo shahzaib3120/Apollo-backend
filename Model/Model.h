@@ -9,22 +9,24 @@
 #include "../Layers/Dense.h"
 #include "../Layers/Softmax.h"
 #include "../Layers/Sigmoid.h"
+#include "../Layers/Relu.h"
 using namespace std;
 namespace Apollo {
-    using MultiType = variant<Dense,Sigmoid>;
+    using MultiType = variant<Dense,Sigmoid,Relu>;
     enum lossFunction{
         BCE,
         MSE
     };
     class Model {
     private:
-        vector<variant<Dense, Sigmoid>> layers;
+        vector<MultiType> layers;
         int numClasses;
         bool verbose;
         float learningRate;
         int *inputShape;
 
-        void forward(Eigen::MatrixXd inputs);
+//        void forward(Eigen::MatrixXd inputs);
+        Eigen::MatrixXd forward(Eigen::MatrixXd inputs);
 
         void backward(Eigen::MatrixXd gradientsIn);
 

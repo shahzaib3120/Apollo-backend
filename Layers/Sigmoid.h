@@ -25,7 +25,7 @@ namespace Apollo {
 
         Sigmoid(int *shape);
 
-        void setInputs(Eigen::MatrixXd inputs);
+        void setInputs(Eigen::MatrixXd &inputs);
 
         Eigen::MatrixXd getOutputs();
 
