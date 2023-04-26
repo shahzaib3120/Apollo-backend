@@ -31,7 +31,7 @@ int main() {
 //    dataloader.head(5);
     int* shape = dataloader.getTrainDataShape();
     auto* model =  new Model(shape, true, 0.002, 1);
-    MultiType d1 = Dense(4, shape);
+    MultiType d1 = Dense(5, shape);
     model->addLayer(&d1);
     MultiType r1 = Relu(model->getLastLayerOutputShape());
     model->addLayer(&r1);

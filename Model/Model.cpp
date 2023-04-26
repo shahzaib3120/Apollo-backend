@@ -183,7 +183,9 @@ void Apollo::Model::update(float learningRate) {
     }
 }
 
-void Apollo::Model::fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY, int epochs, enum lossFunction lossType, bool verb, bool saveEpoch, string savePath, bool earlyStopping, int threshold) {
+void Apollo::Model::fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY,
+                        string savePath, bool saveEpoch , int epochs , enum lossFunction lossType, bool verb,
+                        bool earlyStopping, int threshold, float gamma) {
     /* Args: trainX, trainY, valX, valY, epochs, lossType, verbose, saveEpoch, savePath, earlyStopping, threshold
             trainX: training data - Eigen::MatrixXd
             trainY: training labels - Eigen::MatrixXd
@@ -206,41 +208,10 @@ void Apollo::Model::fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen:
     for(int i=0; i<epochs; i++){
         // compute validation lossType and accuracy
         Eigen::MatrixXd valOutputs = this->forward(valX);
-//        Eigen::MatrixXd valOutputs = this->layers[this->layers.size()-1].index() == 0 ? get<Dense>(this->layers[this->layers.size()-1]).getOutputs() : get<Sigmoid>(this->layers[this->layers.size()-1]).getOutputs();this->forward(trainX);
-//        Eigen::MatrixXd valOutputs;
-//        int lastIndex = this->layers.size()-1;
-//        switch(this->layers[lastIndex].index()){
-//            case 0:
-//                valOutputs = get<Dense>(this->layers[lastIndex]).getOutputs();
-//                break;
-//            case 1:
-//                valOutputs = get<Sigmoid>(this->layers[lastIndex]).getOutputs();
-//                break;
-//            case 2:
-//                valOutputs = get<Relu>(this->layers[lastIndex]).getOutputs();
-//                break;
-//            default:
-//                break;
-//        }
         double valLoss = this->validationLoss(valOutputs, valY, lossType);
         double valAccuracy = accuracy(valOutputs, valY);
         // compute training forward prop
         Eigen::MatrixXd outputs = this->forward(trainX);
-//        Eigen::MatrixXd outputs = this->layers[this->layers.size()-1].index() == 0 ? get<Dense>(this->layers[this->layers.size()-1]).getOutputs() : get<Sigmoid>(this->layers[this->layers.size()-1]).getOutputs();this->forward(trainX);
-//        Eigen::MatrixXd outputs;
-//        switch(this->layers[lastIndex].index()){
-//            case 0:
-//                outputs = get<Dense>(this->layers[lastIndex]).getOutputs();
-//                break;
-//            case 1:
-//                outputs = get<Sigmoid>(this->layers[lastIndex]).getOutputs();
-//                break;
-//            case 2:
-//                outputs = get<Relu>(this->layers[lastIndex]).getOutputs();
-//                break;
-//            default:
-//                break;
-//        }
         this->lossFunction(outputs, trainY, lossType);
         // print the stats
         if(this->verbose){

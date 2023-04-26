@@ -20,9 +20,11 @@ namespace Apollo {
     class Model {
     private:
         vector<MultiType> layers;
+        vector<Layer*> allLayer;
         int numClasses;
         bool verbose;
         float learningRate;
+        float gamma;
         int *inputShape;
 
 //        void forward(Eigen::MatrixXd inputs);
@@ -56,19 +58,10 @@ namespace Apollo {
 
         void compile();
 
-        void fit(Eigen::MatrixXd &inputs, Eigen::MatrixXd &labels, int epochs, enum lossFunction, bool verb);
-
         void
-        fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY, int epochs,
-            enum lossFunction, bool verb);
-
-        void
-        fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY, int epochs,
-            enum lossFunction, bool verb, bool saveEpoch, string filename);
-
-        void
-        fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY, int epochs,
-            enum lossFunction, bool verb, bool saveEpoch, string filename, bool earlyStopping, int threshold);
+        fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY,
+            string savePath, bool saveEpoch = true, int epochs = 1000, enum lossFunction lossType = MSE, bool verb = true,
+            bool earlyStopping = true, int threshold=5, float gamma = 0.1);
 
         Eigen::MatrixXd predict(Eigen::MatrixXd inputs);
 
