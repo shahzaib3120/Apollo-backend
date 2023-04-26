@@ -242,14 +242,14 @@ void Apollo::Model::saveModel(const std::string & path) {
     if(file.is_open()){
         int denseLayers = 0;
         for(auto layer : this->layers){
-            if(typeid(layer) == typeid(Dense)){
+            if(typeid(*layer) == typeid(Dense)){
                 denseLayers++;
             }
         }
         file << denseLayers;
         bool append = true;
         for(auto layer : this->layers){
-            if(typeid(layer) == typeid(Dense)){
+            if(typeid(*layer) == typeid(Dense)){
                 layer->saveLayer(path, append);
                 append = false;
             }

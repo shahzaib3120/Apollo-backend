@@ -22,7 +22,8 @@ int main() {
 //    model->addLayer(&s2);
 //    model->compile();
 //    model->summary();
-//    model->fit(dataloader.getTrainData(), dataloader.getTrainLabels(), dataloader.getValData(), dataloader.getValLabels(), 5, BCE, true, true, "../Models/test.csv", true, 3);
+//    model->fit(dataloader.getTrainData(), dataloader.getTrainLabels(), dataloader.getValData(), dataloader.getValLabels(),
+//               "../Models/emails-100.csv", true , 100 , BCE, true, true, 3);
 //    model->evaluate(dataloader.getValData(), dataloader.getValLabels(), BCE);
 
 //    Linear Regression
@@ -30,14 +31,14 @@ int main() {
     Dataloader dataloader(path, 0.7);
 //    dataloader.head(5);
     int* shape = dataloader.getTrainDataShape();
-    auto* model =  new Model(shape, true, 0.002, 1);
-    model->addLayer(new Dense("dense1",5, shape));
-    model->addLayer(new Relu("relu1", model->getLastLayerOutputShape()));
-    model->addLayer(new Dense("dense2",1, model->getLastLayerOutputShape()));
+    auto* model =  new Model(shape, true, 0.005, 1);
+    model->addLayer(new Dense("dense1",1, shape));
+//    model->addLayer(new Relu("relu1", model->getLastLayerOutputShape()));
+//    model->addLayer(new Dense("dense2",1, model->getLastLayerOutputShape()));
     model->compile();
     model->summary();
     model->fit(dataloader.getTrainData(), dataloader.getTrainLabels(), dataloader.getValData(), dataloader.getValLabels(),
-               "../Models/testRegression.csv", true , 1000 , MSE, true, true, 3);
+               "../Models/testRegression.csv", true , 10 , MSE, true, true, 3);
     model->evaluate(dataloader.getValData(), dataloader.getValLabels(), MSE);
     Eigen::Matrix prediction = model->predict(dataloader.getTrainData());
     cout << dataloader.getTrainData() << endl;

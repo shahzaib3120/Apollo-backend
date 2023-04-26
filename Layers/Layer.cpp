@@ -59,7 +59,6 @@ namespace Apollo{
     int Layer::getTrainableParams() {
         return 0;
     }
-
     void Layer::saveWeights(const std::string &path, bool append) {
         return;
     }
