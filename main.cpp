@@ -31,19 +31,13 @@ int main() {
 //    dataloader.head(5);
     int* shape = dataloader.getTrainDataShape();
     auto* model =  new Model(shape, true, 0.002, 1);
-    MultiType d1 = Dense(5, shape);
-    model->addLayer(&d1);
-    MultiType r1 = Relu(model->getLastLayerOutputShape());
-    model->addLayer(&r1);
-    MultiType d2 = Dense(1, model->getLastLayerOutputShape());
-    model->addLayer(&d2);
-//    MultiType r2 = Relu(model->getLastLayerOutputShape());
-//    model->addLayer(&r2);
-//    MultiType d3 = Dense(1, model->getLastLayerOutputShape());
-//    model->addLayer(&d3);
+    model->addLayer(new Dense("dense1",5, shape));
+    model->addLayer(new Relu("relu1", model->getLastLayerOutputShape()));
+    model->addLayer(new Dense("dense2",1, model->getLastLayerOutputShape()));
     model->compile();
     model->summary();
-    model->fit(dataloader.getTrainData(), dataloader.getTrainLabels(), dataloader.getValData(), dataloader.getValLabels(),1000 , MSE, true, true, "../Models/testRegression.csv", true, 3);
+    model->fit(dataloader.getTrainData(), dataloader.getTrainLabels(), dataloader.getValData(), dataloader.getValLabels(),
+               "../Models/testRegression.csv", true , 1000 , MSE, true, true, 3);
     model->evaluate(dataloader.getValData(), dataloader.getValLabels(), MSE);
     Eigen::Matrix prediction = model->predict(dataloader.getTrainData());
     cout << dataloader.getTrainData() << endl;

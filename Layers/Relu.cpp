@@ -10,17 +10,17 @@ namespace Apollo {
         this->outputs = Eigen::MatrixXd::Random(1, 1);
         this->gradientsOut = Eigen::MatrixXd::Random(1, 1);
     }
-    Relu::Relu(int numInputs, int numOutputs) {
+    Relu::Relu(std::string name, int numInputs, int numOutputs):Layer(name) {
         this->inputs = Eigen::MatrixXd::Random(numInputs, numOutputs);
         this->outputs = Eigen::MatrixXd::Random(numInputs, numOutputs);
         this->gradientsOut = Eigen::MatrixXd::Random(numInputs, numOutputs);
     }
-    Relu::Relu(Eigen::MatrixXd &inputs){
+    Relu::Relu(std::string name, Eigen::MatrixXd &inputs):Layer(name){
         this->inputs = inputs;
         this->outputs = Eigen::MatrixXd::Random(inputs.rows(), inputs.cols());
         this->gradientsOut = Eigen::MatrixXd::Random(inputs.rows(), inputs.cols());
     }
-    Relu::Relu(int *shape){
+    Relu::Relu(std::string name, int *shape):Layer(name){
         this->inputs = Eigen::MatrixXd::Random(shape[0], shape[1]);
         this->outputs = Eigen::MatrixXd::Random(shape[0], shape[1]);
         this->gradientsOut = Eigen::MatrixXd::Random(shape[0], shape[1]);
@@ -30,22 +30,23 @@ namespace Apollo {
     void Relu::setInputs(Eigen::MatrixXd &inputs){
         this->inputs = inputs;
     }
+    void Relu::setOutputs(Eigen::MatrixXd &outputs){
+        this->outputs = outputs;
+    }
+    void Relu::setGradients(Eigen::MatrixXd &gradients){
+        this->gradientsOut = gradients;
+    }
+
+    Eigen::MatrixXd Relu::getInputs(){
+        return inputs;
+    }
     Eigen::MatrixXd Relu::getOutputs(){
         return outputs;
     }
     Eigen::MatrixXd Relu::getGradients() {
         return gradientsOut;
     }
-    void Relu::setGradients(Eigen::MatrixXd &gradients){
-        this->gradientsOut = gradients;
-    }
-    void Relu::setOutputs(Eigen::MatrixXd &outputs){
-        this->outputs = outputs;
-    }
 
-    void Relu::forward() {
-        outputs= inputs.cwiseMax(0);
-    }
     void Relu::forward(Eigen::MatrixXd &inputs) {
         this->inputs = inputs;
         outputs= inputs.cwiseMax(0);
