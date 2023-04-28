@@ -37,6 +37,8 @@ namespace Apollo {
         void forward(Eigen::MatrixXd &inputs);
         void backward(Eigen::MatrixXd &gradients);
         void update(float learningRate);
+        void update(float lr, float gamma);
+
 
         int *getInputShape();
         int *getOutputShape();

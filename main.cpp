@@ -27,23 +27,23 @@ int main() {
 //    model->evaluate(dataloader.getValData(), dataloader.getValLabels(), BCE);
 
 //    Linear Regression
-    string path = "../Dataset/Housing1.csv";
+    string path = "../Dataset/quadratic.csv";
     Dataloader dataloader(path, 0.7);
-    dataloader.normalize();
+//    dataloader.normalize();
     dataloader.head(5);
     int* shape = dataloader.getTrainDataShape();
-    auto* model =  new Model(shape, true, 1e-5, 1);
-    model->addLayer(new Dense("dense1",10, shape));
+    auto* model =  new Model(shape, true, 2e-3, 1);
+    model->addLayer(new Dense("dense1",4, shape));
     model->addLayer(new Relu("relu1", model->getLastLayerOutputShape()));
-    model->addLayer(new Dense("dense2",10, model->getLastLayerOutputShape()));
-    model->addLayer(new Relu("relu2", model->getLastLayerOutputShape()));
-    model->addLayer(new Dense("dense3",1, model->getLastLayerOutputShape()));
+    model->addLayer(new Dense("dense2",1, model->getLastLayerOutputShape()));
+//    model->addLayer(new Relu("relu2", model->getLastLayerOutputShape()));
+//    model->addLayer(new Dense("dense3",1, model->getLastLayerOutputShape()));
     model->compile();
     model->summary();
 //    Eigen::MatrixXd normTrainData = Preprocessing::normalize(dataloader.getTrainData());
 //    Eigen::MatrixXd normValData = Preprocessing::normalize(dataloader.getValData());
     model->fit(dataloader.getTrainData(), dataloader.getTrainLabels(), dataloader.getValData(), dataloader.getValLabels(),
-               "../Models/housing.csv", true , 100 , MSE, true, true, 3);
+               "../Models/testRegression.csv", true , 1000 , MSE, true, true, 3, 0.1);
     model->evaluate(dataloader.getValData(), dataloader.getValLabels(), MSE);
     Eigen::Matrix prediction = model->predict(dataloader.getTrainData());
     cout << dataloader.getTrainData() << endl;

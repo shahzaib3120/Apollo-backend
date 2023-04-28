@@ -12,7 +12,6 @@ namespace Apollo{
         int numNeurons;
         int numInputs;
         int numOutputs;
-        float learningRate = 0.01;
         Eigen::MatrixXd inputs;
         Eigen::MatrixXd outputs;
         Eigen::MatrixXd gradients;
@@ -20,6 +19,8 @@ namespace Apollo{
         Eigen::VectorXd biases;
         Eigen::MatrixXd weightsGradients;
         Eigen::VectorXd biasesGradients;
+        Eigen::MatrixXd weightsVelocity;
+        Eigen::VectorXd biasesVelocity;
     public:
         Dense(std::string name,int numNeurons, int numInputs, int numOutputs);
         Dense(std::string name, int numNeurons, int* shape);
@@ -27,6 +28,7 @@ namespace Apollo{
         void forward(Eigen::MatrixXd &inputs) override;
         void backward(Eigen::MatrixXd &gradientsIn) override;
         void update(float learningRate) override;
+        void update(float learningRate, float gamma) override;
         void summary() override;
         int getTrainableParams() override;
 

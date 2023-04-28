@@ -69,6 +69,11 @@ void Apollo::Model::update(float learningRate) {
         layer->update(learningRate);
     }
 }
+void Apollo::Model::update(float learningRate, float gamma) {
+    for(auto &layer: this->layers){
+        layer->update(learningRate, gamma);
+    }
+}
 
 void Apollo::Model::fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen::MatrixXd &valX, Eigen::MatrixXd &valY,
                         string savePath, bool saveEpoch , int epochs , enum lossFunction lossType, bool verb,
@@ -92,6 +97,7 @@ void Apollo::Model::fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen:
     // set start time
     auto start = chrono::high_resolution_clock::now();
     double prevValAccuracy = 0;
+    this->gamma = gamma;
     for(int i=0; i<epochs; i++){
         // compute validation lossType and accuracy
         Eigen::MatrixXd valOutputs = this->forward(valX);
@@ -128,7 +134,8 @@ void Apollo::Model::fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen:
 
         }
         this->backward(this->gradients);
-        this->update(this->learningRate);
+        this->update(this->learningRate, this->gamma);
+//        this->update(this->learningRate);
         int thresholdCounter = 0;
         if(earlyStopping){
             // if valAccuracy is less than previous valAccuracy in threshold epochs, stop training

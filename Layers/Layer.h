@@ -19,6 +19,7 @@ namespace Apollo
         Layer();
         Layer(std::string name);
         virtual void update(float learningRate) = 0;
+        virtual void update(float learningRate, float gamma) = 0;
         virtual void forward(Eigen::MatrixXd &inputs) = 0;
         virtual void backward(Eigen::MatrixXd &gradients) = 0;
 

@@ -19,6 +19,9 @@ namespace Apollo{
         this->gradients = Eigen::MatrixXd::Random(numNeurons, numOutputs);
         this->weightsGradients = Eigen::MatrixXd::Random(numNeurons, numInputs);
         this->biasesGradients = Eigen::VectorXd::Random(numNeurons);
+        this->weightsVelocity = Eigen::MatrixXd::Zero(numNeurons, numInputs);
+        this->biasesVelocity = Eigen::VectorXd::Zero(numNeurons);
+
     }
     Dense::Dense(std::string name, int numNeurons, int *shape): Layer(name) {
         this->numNeurons = numNeurons;
@@ -31,6 +34,8 @@ namespace Apollo{
         this->gradients = Eigen::MatrixXd::Random(numNeurons, shape[1]);
         this->weightsGradients = Eigen::MatrixXd::Random(numNeurons, shape[0]);
         this->biasesGradients = Eigen::VectorXd::Random(numNeurons);
+        this->weightsVelocity = Eigen::MatrixXd::Zero(numNeurons, numInputs);
+        this->biasesVelocity = Eigen::VectorXd::Zero(numNeurons);
     }
     Dense::Dense(std::string name, Eigen::MatrixXd weights, Eigen::VectorXd biases, int numOutputs): Layer(name) {
         this->weights = weights;
@@ -43,6 +48,8 @@ namespace Apollo{
         this->gradients = Eigen::MatrixXd::Random(weights.rows(), numOutputs);
         this->weightsGradients = Eigen::MatrixXd::Random(weights.rows(), weights.cols());
         this->biasesGradients = Eigen::VectorXd::Random(weights.rows());
+        this->weightsVelocity = Eigen::MatrixXd::Zero(numNeurons, numInputs);
+        this->biasesVelocity = Eigen::VectorXd::Zero(numNeurons);
     }
 
     void Dense::forward(Eigen::MatrixXd &inputs) {
@@ -58,6 +65,12 @@ namespace Apollo{
     void Dense::update(float learningRate) {
         this->weights = this->weights - learningRate * this->weightsGradients;
         this->biases = this->biases - learningRate * this->biasesGradients;
+    }
+    void Dense::update(float learningRate, float gamma) {
+        this->weightsVelocity = gamma * this->weightsVelocity + learningRate * this->weightsGradients;
+        this->weights = this->weights - this->weightsVelocity;
+        this->biasesVelocity = gamma * this->biasesVelocity + learningRate * this->biasesGradients;
+        this->biases = this->biases - this->biasesVelocity;
     }
     void Dense::summary() {
         cout << left << setw(15) << "Dense Layer" << setw(20) << "| Neurons: " << setw(10) << this->numNeurons << setw(20) << "| Inputs: " << setw(10) << this->numInputs << setw(20) << "| Outputs: " << setw(10) <<this->numOutputs << endl;

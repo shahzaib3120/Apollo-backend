@@ -59,6 +59,10 @@ namespace Apollo {
         // dummy function
         return;
     }
+    void Relu::update(float learningRate, float gamma) {
+        // dummy function
+        return;
+    }
     int* Relu::getInputShape() {
         auto* shape = new int[2];
         shape[0] = this->inputs.rows();

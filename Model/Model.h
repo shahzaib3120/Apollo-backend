@@ -33,6 +33,7 @@ namespace Apollo {
         void backward(Eigen::MatrixXd gradientsIn);
 
         void update(float learningRate);
+        void update(float learningRate, float gamma);
 
         void lossFunction(Eigen::MatrixXd &outputs, Eigen::MatrixXd &targets, enum lossFunction loss);
 

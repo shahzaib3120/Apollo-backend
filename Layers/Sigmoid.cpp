@@ -54,6 +54,10 @@ namespace Apollo{
         // dummy function
         return;
     }
+    void Sigmoid::update(float learningRate, float gamma) {
+        // dummy function
+        return;
+    }
     int* Sigmoid::getInputShape() {
         auto* shape = new int[2];
         shape[0] = this->inputs.rows();
