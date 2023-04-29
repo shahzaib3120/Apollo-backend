@@ -8,9 +8,9 @@
 #include <string>
 namespace Apollo {
     namespace Preprocessing {
-        Eigen::MatrixXd normalize(Eigen::MatrixXd matrix);
+        void normalize(Eigen::MatrixXd &matrix);
 
-        Eigen::MatrixXd standardize(Eigen::MatrixXd matrix);
+        void standardize(Eigen::MatrixXd &matrix);
 
         Eigen::MatrixXd spamPreprocessingFile(const std::string &path);
 

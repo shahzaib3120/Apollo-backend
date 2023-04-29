@@ -121,7 +121,7 @@ Eigen::MatrixXd Apollo::Preprocessing::spamPreprocessing(const std::string &emai
     return matrix;
 }
 
-Eigen::MatrixXd Apollo::Preprocessing::normalize(Eigen::MatrixXd matrix) {
+void Apollo::Preprocessing::normalize(Eigen::MatrixXd &matrix) {
     // Args:
     // matrix: matrix to be normalized
     // Returns:
@@ -133,11 +133,18 @@ Eigen::MatrixXd Apollo::Preprocessing::normalize(Eigen::MatrixXd matrix) {
     // Output:
     // [[0.16666666666666666, 0.3333333333333333, 0.5],
     // [0.6666666666666666, 0.8333333333333334, 1.0]]
-    double max = matrix.maxCoeff();
-    return matrix / max;
-}
 
-Eigen::MatrixXd Apollo::Preprocessing::standardize(Eigen::MatrixXd matrix) {
+    // normalize each row
+    for (int i = 0; i < matrix.rows(); i++) {
+        // find the maximum element in the row
+        double max = matrix.row(i).maxCoeff();
+        // divide each element by the maximum element
+        for (int j = 0; j < matrix.cols(); j++) {
+            matrix(i, j) /= max;
+        }
+    }
+}
+void Apollo::Preprocessing::standardize(Eigen::MatrixXd &matrix) {
     // Args:
     // matrix: matrix to be standardized
     // Returns:
@@ -166,5 +173,4 @@ Eigen::MatrixXd Apollo::Preprocessing::standardize(Eigen::MatrixXd matrix) {
             standardizedMatrix(i, j) = (matrix(i, j) - mean) / std;
         }
     }
-    return standardizedMatrix;
 }

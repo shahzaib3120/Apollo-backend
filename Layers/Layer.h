@@ -5,6 +5,7 @@
 #ifndef APOLLO_LAYER_H
 #define APOLLO_LAYER_H
 #include <Eigen/Dense>
+#include <string>
 #include <fstream>
 #include <string>
 
@@ -13,91 +14,37 @@ namespace Apollo
     class Layer
     {
     protected:
-        int numNeurons;
-        int numInputs;
-        int numOutputs;
-        float learningRate = 0.01;
-        Eigen::MatrixXd weights;
-        Eigen::VectorXd biases;
-        Eigen::MatrixXd inputs;
-        Eigen::MatrixXd outputs;
-        Eigen::MatrixXd gradients;
-        Eigen::MatrixXd weightsGradients;
-        Eigen::VectorXd biasesGradients;
-
+        std::string name;
     public:
-        Layer(int numNeurons, int numInputs, int numOutputs);
-
-        Layer(int numNeurons, int *shape);
-
-        Layer(Eigen::MatrixXd weights, Eigen::VectorXd biases, int numOutputs);
-
-        // TODO: CHECK IF PARENT CLASS ARRAY CAN HAVE CHILD ELEMENTS
-        //    Layer(Eigen::MatrixXd inputs);
-        void setInputs(Eigen::MatrixXd inputs);
-
-        Eigen::MatrixXd getOutputs();
-
-        Eigen::MatrixXd getGradients();
-
-        Eigen::MatrixXd getWeights();
-
-        Eigen::VectorXd getBiases();
-
-        void setWeights(Eigen::MatrixXd weights);
-
-        void setBiases(Eigen::VectorXd biases);
-
-        void setGradients(Eigen::MatrixXd gradients);
-
-        void setWeightsGradients(Eigen::MatrixXd weightsGradients);
-
-        void setBiasesGradients(Eigen::MatrixXd biasesGradients);
-
-        void setOutputs(Eigen::MatrixXd outputs);
-
-        void setNumNeurons(int numNeurons);
-
-        void setNumInputs(int numInputs);
-
-        void setNumOutputs(int numOutputs);
-
-        int getNumNeurons();
-
-        int getNumInputs();
-
-        int getNumOutputs();
-
-        int *getOutputShape();
-
-        int *getInputShape();
-
-        void initializeWeights();
-
-        void initializeBiases();
-
-        Eigen::MatrixXd getWeightsGradients();
-
-        Eigen::VectorXd getBiasesGradients();
-
+        Layer();
+        Layer(std::string name);
         virtual void update(float learningRate) = 0;
+        virtual void update(float learningRate, float gamma) = 0;
+        virtual void forward(Eigen::MatrixXd &inputs) = 0;
+        virtual void backward(Eigen::MatrixXd &gradients) = 0;
 
-        virtual void forward(Eigen::MatrixXd inputs) = 0;
-
-        virtual void backward(Eigen::MatrixXd gradients) = 0;
-
+        // TODO: make summary optional and add a try catch block in the summary method of the model
         virtual void summary() = 0;
-
-        virtual int getTrainableParams() = 0;
+        virtual int getTrainableParams();
 
         // TODO: add a method to save the weights and biases to a file
-        void saveWeights(std::string const &path, bool append = false);
+        virtual void saveWeights(std::string const &path, bool append = false);
+        virtual void saveBiases(std::string const &path, bool append = false);
+        virtual void saveLayer(std::string const &path, bool append = false);
+        virtual void saveGradients(std::string const &path, bool append = false);
+        
+        virtual void setInputs(Eigen::MatrixXd &inputs);
+        virtual void setOutputs(Eigen::MatrixXd &outputs);
+        virtual void setGradients(Eigen::MatrixXd &gradients);
 
-        void saveBiases(std::string const &path, bool append = false);
+        virtual Eigen::MatrixXd getInputs();
+        virtual Eigen::MatrixXd getOutputs();
+        virtual Eigen::MatrixXd getGradients();
 
-        void saveGradients(std::string const &path, bool append = false);
+        virtual int *getInputShape();
+        virtual int *getOutputShape();
 
-        void saveLayer(std::string const &path, bool append = false);
+        std::string getName();
     };
 
 }

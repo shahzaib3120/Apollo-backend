@@ -3,6 +3,7 @@
 //
 
 #include "Dataloader.h"
+#include "../Preprocessing/Preprocessing.h"
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -181,6 +182,12 @@ void Apollo::Dataloader::head(int n) {
         cout << this->trainLabels.row(0)[i] << endl;
     }
 }
+
+void Apollo::Dataloader::normalize() {
+    Apollo::Preprocessing::normalize(trainData);
+    Apollo::Preprocessing::normalize(valData);
+}
+
  int* Apollo::Dataloader::getTrainDataShape() {
     auto* shape = new int[2];
     shape[0] = (int)this->trainData.rows();

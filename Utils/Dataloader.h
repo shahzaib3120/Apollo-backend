@@ -36,6 +36,7 @@ namespace Apollo{
         int* getTrainLabelsShape();
         int * getValDataShape();
         int* getValLabelsShape();
+        void normalize();
 
     };
 }

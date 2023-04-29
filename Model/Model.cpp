@@ -19,8 +19,8 @@ Apollo::Model::Model(int *inputShape, bool verb, float learningRate, int numClas
     this->learningRate = learningRate;
     this->numClasses = numClasses;
 }
-void Apollo::Model::addLayer(MultiType *layer) {
-    this->layers.push_back(*layer);
+void Apollo::Model::addLayer(Layer *layer) {
+    this->layers.push_back(layer);
 }
 void Apollo::Model::compile() {
     //TODO: optimizations. get shape once and store it in a variable instead of calling it every time
@@ -33,153 +33,45 @@ void Apollo::Model::compile() {
     assert(this->inputShape != nullptr);
     // loop over layers and check if input shape of next layer is equal to output shape of previous layer
     for(int i=0; i<this->layers.size()-1; i++){
-        if(this->layers[i].index() == 0){
-            Dense dense = get<Dense>(this->layers[i]);
-            if(this->layers[i+1].index() == 0){
-                Dense dense2 = get<Dense>(this->layers[i+1]);
-                // check that input shape of next layer is equal to output shape of previous layer
-                // if not, throw an error mentioning the layer number
-//                if(dense.getOutputShape() != dense2.getInputShape()){
-                if(!compareShapes(dense.getOutputShape(), dense2.getInputShape())){
-                    throw invalid_argument("Input shape of layer "+to_string(i+2)+" is not equal to output shape of layer "+to_string(i+1)+"\ndense.getOutputShape() != dense2.getInputShape()"+"\n"+to_string(dense.getOutputShape()[0])+" x "+to_string(dense.getOutputShape()[1])+" != "+to_string(dense2.getInputShape()[0])+" x "+to_string(dense2.getInputShape()[1]));
-                }
-            }
-
-            else if(this->layers[i+1].index() == 1){
-                Sigmoid sigmoid = get<Sigmoid>(this->layers[i+1]);
-//                assert(dense.getOutputShape() == sigmoid.getInputShape());
-                if(!compareShapes(dense.getOutputShape(), sigmoid.getInputShape())){
-                    throw invalid_argument("Input shape of layer "+to_string(i+2)+" is not equal to output shape of layer "+to_string(i+1)+"\ndense.getOutputShape() != sigmoid.getInputShape()"+"\n"+to_string(dense.getOutputShape()[0])+" x "+to_string(dense.getOutputShape()[1])+" != "+to_string(sigmoid.getInputShape()[0])+" x "+to_string(sigmoid.getInputShape()[1]));
-                }
-            }
-
-            else if(this->layers[i+1].index() == 2){
-                Relu relu = get<Relu>(this->layers[i+1]);
-//                assert(dense.getOutputShape() == sigmoid.getInputShape());
-                if(!compareShapes(dense.getOutputShape(), relu.getInputShape())){
-                    throw invalid_argument("Input shape of layer "+to_string(i+2)+" is not equal to output shape of layer "+to_string(i+1)+"\ndense.getOutputShape() != relu.getInputShape()"+"\n"+to_string(dense.getOutputShape()[0])+" x "+to_string(dense.getOutputShape()[1])+" != "+to_string(relu.getInputShape()[0])+" x "+to_string(relu.getInputShape()[1]));
-                }
-            }
-        }
-        else if(this->layers[i].index() == 1){
-            Sigmoid sigmoid = get<Sigmoid>(this->layers[i]);
-            if(this->layers[i+1].index() == 0){
-                Dense dense2 = get<Dense>(this->layers[i+1]);
-//                assert(sigmoid.getOutputShape() == dense2.getInputShape());
-                if(!compareShapes(sigmoid.getOutputShape(), dense2.getInputShape())){
-                    throw invalid_argument("Input shape of layer "+to_string(i+2)+" is not equal to output shape of layer "+to_string(i+1)+"\nsigmoid.getOutputShape() != dense2.getInputShape()"+"\n"+to_string(sigmoid.getOutputShape()[0])+" x "+to_string(sigmoid.getOutputShape()[1])+" != "+to_string(dense2.getInputShape()[0])+" x "+to_string(dense2.getInputShape()[1]));
-                }
-            }
-            else if(this->layers[i+1].index() == 1){
-                Sigmoid sigmoid2 = get<Sigmoid>(this->layers[i+1]);
-//                assert(sigmoid.getOutputShape() == sigmoid2.getInputShape());
-                if(!compareShapes(sigmoid.getOutputShape(), sigmoid2.getInputShape())){
-                    throw invalid_argument("Input shape of layer "+to_string(i+2)+" is not equal to output shape of layer "+to_string(i+1)+"\nsigmoid.getOutputShape() != sigmoid2.getInputShape()"+"\n"+to_string(sigmoid.getOutputShape()[0])+" x "+to_string(sigmoid.getOutputShape()[1])+" != "+to_string(sigmoid2.getInputShape()[0])+" x "+to_string(sigmoid2.getInputShape()[1]));
-                }
-            }
-        }
-        else if(this->layers[i].index() == 2){
-            Relu relu = get<Relu>(this->layers[i]);
-            if(this->layers[i+1].index() == 0){
-                Dense dense = get<Dense>(this->layers[i+1]);
-//                assert(relu.getOutputShape() == dense.getInputShape());
-                if(!compareShapes(relu.getOutputShape(), dense.getInputShape())){
-                    throw invalid_argument("Input shape of layer "+to_string(i+2)+" is not equal to output shape of layer "+to_string(i+1)+"\nrelu.getOutputShape() != dense.getInputShape()"+"\n"+to_string(relu.getOutputShape()[0])+" x "+to_string(relu.getOutputShape()[1])+" != "+to_string(dense.getInputShape()[0])+" x "+to_string(dense.getInputShape()[1]));
-                }
-            }
-            else if(this->layers[i+1].index() == 1){
-                Sigmoid sigmoid = get<Sigmoid>(this->layers[i+1]);
-//                assert(relu.getOutputShape() == sigmoid.getInputShape());
-                if(!compareShapes(relu.getOutputShape(), sigmoid.getInputShape())){
-                    throw invalid_argument("Input shape of layer "+to_string(i+2)+" is not equal to output shape of layer "+to_string(i+1)+"\nrelu.getOutputShape() != sigmoid.getInputShape()"+"\n"+to_string(relu.getOutputShape()[0])+" x "+to_string(relu.getOutputShape()[1])+" != "+to_string(sigmoid.getInputShape()[0])+" x "+to_string(sigmoid.getInputShape()[1]));
-                }
-            }
-            else if(this->layers[i+1].index() == 2){
-                Relu relu2 = get<Relu>(this->layers[i+1]);
-//                assert(relu.getOutputShape() == relu2.getInputShape());
-                if(!compareShapes(relu.getOutputShape(), relu2.getInputShape())){
-                    throw invalid_argument("Input shape of layer "+to_string(i+2)+" is not equal to output shape of layer "+to_string(i+1)+"\nrelu.getOutputShape() != relu2.getInputShape()"+"\n"+to_string(relu.getOutputShape()[0])+" x "+to_string(relu.getOutputShape()[1])+" != "+to_string(relu2.getInputShape()[0])+" x "+to_string(relu2.getInputShape()[1]));
-                }
-            }
+        if(!compareShapes(this->layers[i]->getOutputShape(), this->layers[i+1]->getInputShape())){
+            cout<<"Input shape of layer "<<i+2<<" is not equal to output shape of layer "<<i+1<<endl;
+            cout<<"Input shape of layer "<<i+2<<" is: ";
+            cout << this->layers[i+1]->getInputShape()[0] << "x" << this->layers[i+1]->getInputShape()[1] << endl;
+            cout<<endl;
+            cout<<"Output shape of layer "<<i+1<<" is: ";
+            cout << this->layers[i]->getOutputShape()[0] << "x" << this->layers[i]->getOutputShape()[1] << endl;
+            cout<<endl;
+            cout<<"Please check the input and output shapes of the layers"<<endl;
+            exit(1);
         }
     }
+
     if(this->verbose){
         cout<<"Model compiled successfully"<<endl;
         system("pause");
     }
 }
 Eigen::MatrixXd Apollo::Model::forward(Eigen::MatrixXd inputs) {
-    for(int i=0; i<this->layers.size(); i++){
-        if(layers[i].index() == 0){
-            Dense dense = get<Dense>(layers[i]);
-            dense.forward(inputs);
-            inputs = dense.getOutputs();
-            // update layer
-            layers[i] = dense;
-        }
-        else if(layers[i].index() == 1){
-            Sigmoid sigmoid = get<Sigmoid>(layers[i]);
-            sigmoid.forward(inputs);
-            inputs = sigmoid.getOutputs();
-            // update the layer in the layers vector
-            layers[i] = sigmoid;
-        } else if(layers[i].index() == 2){
-            Relu relu = get<Relu>(layers[i]);
-            relu.forward(inputs);
-            inputs = relu.getOutputs();
-//            cout << inputs << endl;
-            // update the layer in the layers vector
-            layers[i] = relu;
-        }
+    for(auto &layer: this->layers){
+        layer->forward(inputs);
+        inputs = layer->getOutputs();
     }
     return inputs;
 }
 void Apollo::Model::backward(Eigen::MatrixXd gradientsIn) {
-    for(int i=this->layers.size()-1; i>=0; i--){
-        if(this->layers[i].index() == 0){
-            Dense dense = get<Dense>(this->layers[i]);
-            dense.backward(gradientsIn);
-            gradientsIn = dense.getGradients();
-            // update the layer in the layers vector
-            this->layers[i] = dense;
-        }
-        else if(this->layers[i].index() == 1){
-            Sigmoid sigmoid = get<Sigmoid>(this->layers[i]);
-            sigmoid.backward(gradientsIn);
-            gradientsIn = sigmoid.getGradients();
-            // update the layer in the layers vector
-            this->layers[i] = sigmoid;
-        }
-        else if(this->layers[i].index() == 2){
-            Relu relu = get<Relu>(this->layers[i]);
-            relu.backward(gradientsIn);
-            gradientsIn = relu.getGradients();
-            // update the layer in the layers vector
-            this->layers[i] = relu;
-        }
-    }
+    for_each(this->layers.rbegin(), this->layers.rend(), [&](Layer *layer){
+        layer->backward(gradientsIn);
+        gradientsIn = layer->getGradients();
+    });
 }
 void Apollo::Model::update(float learningRate) {
     for(auto &layer: this->layers){
-        if(layer.index() == 0){
-            Dense dense = get<Dense>(layer);
-            dense.update(learningRate);
-            // update the layer in the layers vector
-            layer = dense;
-        }
-        else if(layer.index() == 1){
-            Sigmoid sigmoid = get<Sigmoid>(layer);
-            sigmoid.update(learningRate);
-            // update the layer in the layers vector
-            layer = sigmoid;
-        }
-        // TODO: dummy; could be removed
-        else if(layer.index() == 2){
-            Relu relu = get<Relu>(layer);
-            relu.update(learningRate);
-            // update the layer in the layers vector
-            layer = relu;
-        }
+        layer->update(learningRate);
+    }
+}
+void Apollo::Model::update(float learningRate, float gamma) {
+    for(auto &layer: this->layers){
+        layer->update(learningRate, gamma);
     }
 }
 
@@ -205,6 +97,7 @@ void Apollo::Model::fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen:
     // set start time
     auto start = chrono::high_resolution_clock::now();
     double prevValAccuracy = 0;
+    this->gamma = gamma;
     for(int i=0; i<epochs; i++){
         // compute validation lossType and accuracy
         Eigen::MatrixXd valOutputs = this->forward(valX);
@@ -241,7 +134,8 @@ void Apollo::Model::fit(Eigen::MatrixXd &trainX, Eigen::MatrixXd &trainY, Eigen:
 
         }
         this->backward(this->gradients);
-        this->update(this->learningRate);
+        this->update(this->learningRate, this->gamma);
+//        this->update(this->learningRate);
         int thresholdCounter = 0;
         if(earlyStopping){
             // if valAccuracy is less than previous valAccuracy in threshold epochs, stop training
@@ -321,51 +215,13 @@ double Apollo::Model::accuracy(Eigen::MatrixXd outputs, Eigen::MatrixXd labels) 
 }
 int* Apollo::Model::getLastLayerOutputShape() {
     int* shape = new int[2];
-    if(layers.size()>0){
-        if(this->layers[this->layers.size()-1].index() == 0){
-            Dense dense = get<Dense>(this->layers[this->layers.size()-1]);
-            shape= dense.getOutputShape();
-        }
-        else if(this->layers[this->layers.size()-1].index() == 1){
-            Sigmoid sigmoid = get<Sigmoid>(this->layers[this->layers.size()-1]);
-            shape= sigmoid.getOutputShape();
-        }
-        else if(this->layers[this->layers.size()-1].index() == 2){
-            Relu relu = get<Relu>(this->layers[this->layers.size()-1]);
-//            int* shape1 = relu.getOutputShape();
-//            shape[0] = shape1[0];
-//            shape[1] = shape1[1];
-            shape = relu.getOutputShape();
-        }
-        // print shape
-        return shape;
-    }else{
-        shape[0] = 0;
-        shape[1] = 0;
-        return shape;
-    }
+    assert(this->layers.size() > 0);
+    shape = this->layers[this->layers.size()-1]->getOutputShape();
 }
 int* Apollo::Model::getLastLayerInputShape() {
     int* shape = new int[2];
-    if(layers.size()>0){
-        if(this->layers[this->layers.size()-1].index() == 0){
-            Dense dense = get<Dense>(this->layers[this->layers.size()-1]);
-            shape = dense.getInputShape();
-        }
-        else if(this->layers[this->layers.size()-1].index() == 1){
-            Sigmoid sigmoid = get<Sigmoid>(this->layers[this->layers.size()-1]);
-            shape= sigmoid.getInputShape();
-        }
-        else if(this->layers[this->layers.size()-1].index() == 2){
-            Relu relu = get<Relu>(this->layers[this->layers.size()-1]);
-            shape= relu.getInputShape();
-        }
-        return shape;
-    }else{
-        shape[0] = 0;
-        shape[1] = 0;
-        return shape;
-    }
+    assert(this->layers.size() > 0);
+    shape = this->layers[this->layers.size()-1]->getInputShape();
 }
 bool Apollo::Model::compareShapes(int const *shape1, int const *shape2) {
     if(shape1[0] == shape2[0] && shape1[1] == shape2[1]){
@@ -392,26 +248,17 @@ void Apollo::Model::saveModel(const std::string & path) {
     std::ofstream file(path);
     if(file.is_open()){
         int denseLayers = 0;
-        for(int i=0; i<this->layers.size(); i++){
-            if(this->layers[i].index() == 0){
+        for(auto layer : this->layers){
+            if(typeid(*layer) == typeid(Dense)){
                 denseLayers++;
             }
         }
         file << denseLayers;
         bool append = true;
         for(auto layer : this->layers){
-            if(layer.index() == 0){
-                Dense dense = get<Dense>(layer);
-                dense.saveLayer(path, append);
-                append = true;
-            }
-            else if(layer.index() == 1) {
-                Sigmoid sigmoid = get<Sigmoid>(layer);
-                append = true;
-            }
-            else if(layer.index() == 2) {
-                Relu relu = get<Relu>(layer);
-                append = true;
+            if(typeid(*layer) == typeid(Dense)){
+                layer->saveLayer(path, append);
+                append = false;
             }
         }
         file.close();
@@ -470,14 +317,15 @@ void Apollo::Model::loadModel(const std::string &path) {
                 }
             }
             weights = Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>(matrixEntries.data(), matrixRowNumber, matrixEntries.size() / matrixRowNumber);
-            MultiType layer = Dense(weights, biases, this->inputShape[1]);
+            Layer* layer = new Dense("dense" ,weights, biases, this->inputShape[1]);
+//            MultiType layer = Dense(weights, biases, this->inputShape[1]);
             this->layers.push_back(layer);
             // append sigmoid layer after each dense layer
             int* sigmoidShape = new int[2];
             sigmoidShape[0] = weights.rows();
             sigmoidShape[1] = this->inputShape[1];
-            MultiType sigmoid = Sigmoid(sigmoidShape);
-            this->layers.push_back(sigmoid);
+            layer = new Sigmoid("sigmoid", sigmoidShape);
+            this->layers.push_back(layer);
         }
         file.close();
     }
@@ -488,19 +336,8 @@ void Apollo::Model::loadModel(const std::string &path) {
 
 void Apollo::Model::summary() {
     cout<<"Model Summary"<<endl;
-    for(int i=0; i<this->layers.size(); i++){
-        if(this->layers[i].index() == 0){
-            Dense dense = get<Dense>(this->layers[i]);
-            dense.summary();
-        }
-        else if(this->layers[i].index() == 1){
-            Sigmoid sigmoid = get<Sigmoid>(this->layers[i]);
-            sigmoid.summary();
-        }
-        else if(this->layers[i].index() == 2){
-            Relu relu = get<Relu>(this->layers[i]);
-            relu.summary();
-        }
+    for(auto layer : this->layers){
+        layer->summary();
     }
     // print the output shape
     int* outputShape = this->getLastLayerOutputShape();
@@ -510,9 +347,11 @@ void Apollo::Model::summary() {
     // print trainable parameters
     int trainableParams = 0;
     for(int i=0; i<this->layers.size(); i++){
-        if(this->layers[i].index() == 0){
-            Dense dense = get<Dense>(this->layers[i]);
-            trainableParams += dense.getTrainableParams();
+        try{
+            trainableParams += this->layers[i]->getTrainableParams();
+        }
+        catch(int e){
+            cout<<"Layer "<<i<<" is not trainable"<<endl;
         }
     }
     cout<< "Total Layers: " << this->layers.size() << endl;

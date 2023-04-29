@@ -12,20 +12,20 @@
 #include "../Layers/Relu.h"
 using namespace std;
 namespace Apollo {
-    using MultiType = variant<Dense,Sigmoid,Relu>;
     enum lossFunction{
         BCE,
         MSE
     };
     class Model {
     private:
-        vector<MultiType> layers;
-        vector<Layer*> allLayer;
+        vector<Layer*> layers;
         int numClasses;
         bool verbose;
         float learningRate;
         float gamma;
         int *inputShape;
+        Eigen::MatrixXd gradients;
+        float loss;
 
 //        void forward(Eigen::MatrixXd inputs);
         Eigen::MatrixXd forward(Eigen::MatrixXd inputs);
@@ -33,29 +33,22 @@ namespace Apollo {
         void backward(Eigen::MatrixXd gradientsIn);
 
         void update(float learningRate);
-
-        static double accuracy(Eigen::MatrixXd outputs, Eigen::MatrixXd targets);
+        void update(float learningRate, float gamma);
 
         void lossFunction(Eigen::MatrixXd &outputs, Eigen::MatrixXd &targets, enum lossFunction loss);
 
         double validationLoss(Eigen::MatrixXd &outputs, Eigen::MatrixXd &targets, enum lossFunction loss);
 
-        Eigen::MatrixXd gradients;
-        float loss;
-
-        static bool compareShapes(int const *shape1, int const *shape2);
-
-        float startTime;
-
         void saveData(string filename, Eigen::MatrixXd matrix);
+
+        static double accuracy(Eigen::MatrixXd outputs, Eigen::MatrixXd targets);
+        static bool compareShapes(int const *shape1, int const *shape2);
 
     public:
         Model();
 
         Model(int *inputShape, bool verb, float learningRate = 0.001, int numClasses = 1);
-
-        void addLayer(MultiType *layer);
-
+        void addLayer(Layer *layer);
         void compile();
 
         void
@@ -83,9 +76,9 @@ namespace Apollo {
 
         int *getInputShape();
 
-        void setLayers(vector<variant<Dense, Sigmoid>> layers);
+        void setLayers(Layer* layers);
 
-        vector<variant<Dense, Sigmoid>> getLayers();
+        vector<Layer*> getLayers();
 
         int *getLastLayerOutputShape();
 

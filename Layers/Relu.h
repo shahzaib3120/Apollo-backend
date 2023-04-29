@@ -8,42 +8,40 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
-namespace Apollo {
+#include "Layer.h"
 
-    class Relu {
+namespace Apollo {
+    class Relu: public Layer{
     private:
         Eigen::MatrixXd inputs;
         Eigen::MatrixXd outputs;
         Eigen::MatrixXd gradientsOut;
-//        int* shape = new int[2];
     public:
         // constructors
         Relu();
-        Relu(Eigen::MatrixXd &inputs);
-        Relu(int numInputs, int numOutputs);
-        Relu(int *shape);
+        Relu(std::string name, Eigen::MatrixXd &inputs);
+        Relu(std::string name, int numInputs, int numOutputs);
+        Relu(std::string name, int *shape);
 
         // methods
         void setInputs(Eigen::MatrixXd &inputs);
+        void setOutputs(Eigen::MatrixXd &outputs);
+        void setGradients(Eigen::MatrixXd &gradients);
+
+        Eigen::MatrixXd getInputs();
         Eigen::MatrixXd getOutputs();
         Eigen::MatrixXd getGradients();
-        void setGradients(Eigen::MatrixXd &gradients);
-        void setOutputs(Eigen::MatrixXd &outputs);
 
-        void forward();
         void forward(Eigen::MatrixXd &inputs);
-        void backward();
         void backward(Eigen::MatrixXd &gradients);
         void update(float learningRate);
+        void update(float lr, float gamma);
 
         int *getInputShape();
         int *getOutputShape();
 
         void summary();
 
-//        ~Relu(){
-//            delete shape;
-//        };
     };
 
 } // Apollo
